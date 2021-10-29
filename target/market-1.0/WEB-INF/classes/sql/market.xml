@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="market">
+	<select id="allProduct" resultType="gu.market.repository.model.Product">
+        SELECT productNo, productCatCode, productName, productDetail, productPrice
+          FROM product
+    </select> 
+
+    <select id="selectProductOne" parameterType="String" resultType="gu.market.repository.model.Product">
+        SELECT productNo, productCatCode, productName, productDetail, productPrice, productCount
+          FROM product
+         WHERE productNo=#{productNo} 
+    </select> 
+    
+   	<select id="recommandProduct" resultType="gu.market.repository.model.Product">
+        SELECT productNo, productCatCode, productName, productDetail, productPrice
+          FROM product
+         WHERE productCatCode=2
+    </select> 
+    	<select id="newProduct" resultType="gu.market.repository.model.Product">
+        SELECT productNo, productCatCode, productName, productDetail, productPrice
+          FROM product
+      ORDER BY productAddDate DESC limit 3 
+    </select> 
+</mapper>
