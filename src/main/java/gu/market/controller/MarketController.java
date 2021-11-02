@@ -1,13 +1,14 @@
 package gu.market.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession; // 로그인하면서추가
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,7 +30,7 @@ public class MarketController {
 	// 메인을 top 으로
 	@RequestMapping(value = "/top")
 	public ModelAndView top(HttpSession session) throws Exception {
-		ModelAndView mv = new ModelAndView("market/01_top");
+		ModelAndView mv = new ModelAndView("market/top");
 		mv.addObject("name", sessionManager.getName(session));
 		return mv;
 	}
@@ -93,39 +94,34 @@ public class MarketController {
 		System.out.println("id:" + id + ", pw:" + pwd + ", name: "+ name);
 
 		marketSvc.join(id, pwd, name);
-		sessionManager.login(request.getSession(), name);
+		//sessionManager.login(request.getSession(), name);
 		return "redirect:/top";
 	}
 	
-	// 로그인
+	// 로그인 페이지
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(HttpSession session) throws Exception {
+	public String getLogin(HttpSession session) throws Exception {
 		if (sessionManager.isLogin(session))
-			return "redirect:/top";
+			return "redirect:/market/top";
 
-		return "market/login";
+		return "market/loginForm";
 	}
-
-//	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA, produces = MediaType.APPLICATION_JSON)
-//	public String login(@RequestBody Login login) throws Exception{
-//		 marketSvc.Memberlogin(login.getId(), login.getPw());
-//		 return "redirect:/market/top";
-//	}
-
+	
+	// 로그인 프로세스
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request) throws Exception {
 		// 이미 로그인 상태일 경우
 		if (sessionManager.isLogin(request.getSession()))
-			return "redirect:/top";
+			return "redirect:/market/top";
 
 		// 로그인 상태가 아닐 경우
 		String id = request.getParameter("id");
 		String pwd = request.getParameter("pw");
 		System.out.println("id:" + id + ", pw:" + pwd);
 
-		String name = marketSvc.memberlogin(id, pwd);
-		sessionManager.login(request.getSession(), name);
-		return "redirect:/top";
+		String[] value = marketSvc.memberlogin(id, pwd);
+		sessionManager.login(request.getSession(), value);
+		return "redirect:/market/top";
 	}
 
 	@RequestMapping("/logout")
@@ -135,7 +131,7 @@ public class MarketController {
 		}
 
 		session.invalidate();
-		return "redirect:/top";
+		return "redirect:/market/top";
 	}
 
 	// 한품목 선택했을때 읽기
@@ -168,12 +164,6 @@ public class MarketController {
 		return "market/allProductPage";
 	}
 
-	//admin관련 mapping
-	@RequestMapping(value = "/adminMain")
-	public String adminMain() throws Exception {
-		return "market/admin_main";
-	}
-
 	@RequestMapping(value = "/allMember")
 	public String allMember() throws Exception {
 		return "market/allMemberPage";
@@ -202,4 +192,21 @@ public class MarketController {
 		mv.addObject("error_info", e);
 		return mv;
 	}
+	// 구매하기 ( 재고 및 정보전달 후 구매완료페이지로만 넘어가게. 나중에 결제 추가)
+		@RequestMapping(value = "/purchase")
+		public ModelAndView purchase(HttpServletRequest request) throws Exception {
+			String productNo = request.getParameter("productNo");
+			Product productInfo = marketSvc.selectProductOne(productNo);
+
+			ModelAndView mv = new ModelAndView("market/selectedproductPage");
+			mv.addObject("product_info", productInfo);
+
+			return mv;
+		}
+	
+	//admin contoller로 이동시켜야할것들
+	@RequestMapping(value="/adminMain", method = RequestMethod.GET) 
+	public String adminMain() {
+		return "market/admin_main_temp";   
+	} 
 }

@@ -46,7 +46,7 @@ public class MarketService {
 	}
 	
 	//로그인
-	public String memberlogin(String id, String pw) throws MarketException {
+	public String[] memberlogin(String id, String pw) throws MarketException {
 		Member member = new Member();
 		member.setMemberId(id);
 		member.setMemberPw(pw);
@@ -54,8 +54,12 @@ public class MarketService {
 		Member loginedMember = sqlSession2.selectOne("login", member);
 		if (loginedMember == null) {
 			throw new MarketException(ErrorCode.InvaliddateUserErrCode);
+		}else {//이부분 list로 받아서 list로 전달하고싶었으나 안됨. 주소만가져오는건지... 그냥 배열로 넣음.
+			String[] value = new String[2];
+			value[0] = loginedMember.getMemberName();
+			value[1] = loginedMember.getMemberCheck();
+			return value;
 		}
-		return loginedMember.getMemberName();
 	}
 	
 	// 회원가입

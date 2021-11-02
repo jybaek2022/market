@@ -26,10 +26,10 @@
     </select> 
     
     <select id="login" parameterType="String" resultType="gu.market.repository.model.Member">
-        SELECT memberName
+        SELECT memberName, memberCheck
           FROM member
-         WHERE memberId=#{memberId} and memberPw=#{memberPw}  
-    </select> 
+         WHERE memberId=#{memberId} and memberPw=#{memberPw}
+    </select>
     
     <insert id="joinMember" parameterType="gu.market.repository.model.Member" >
         INSERT INTO member (memberId, memberPw, memberName)

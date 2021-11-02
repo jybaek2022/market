@@ -8,11 +8,11 @@
 
 <table>	
 	<c:forEach var="productview" items="${productview}" varStatus="status">	
-		<c:url var="link" value="selectedProduct"> <!-- original : value="board1Read" -->
+		<c:url var="link" value="selectedProduct">
 			<c:param name="productNo" value="${productview.productNo}" /> <!-- value값의 변수명 vo에서 그대로 가져와야함 -->
 		</c:url>							  				
 			<td><a href="${link}">
-			<img height = "500" width ="300" src = "img/${productview.productNo}.jpg">
+			<img height = "500" width ="300" src = "../img/${productview.productNo}.jpg">
 			<c:out value="${productview.productCatCode}"/>
 			<br><c:out value="${productview.productName}"/>
 			<br><c:out value="${productview.productDetail}"/>

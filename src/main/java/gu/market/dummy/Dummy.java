@@ -20,16 +20,16 @@ public class Dummy {
 		return list;
 	}
 	
-	public ArrayList<Member> getMemberList() {
-		ArrayList<Member> list = new ArrayList<Member>();
-		list.add(new Member(1, "M10001", "1111", "김행복", "010-1111-2222","서울" , "**구"));
-		list.add(new Member(2, "M10002", "2222", "이축복", "010-1111-3333","부산" , "**구"));
-		list.add(new Member(3, "M10003", "3333", "장믿음", "010-1111-4444","서울" , "**구"));
-		list.add(new Member(4, "M10004", "4444", "최사랑", "010-1111-5555","경기" , "**시"));
-		list.add(new Member(5, "M10005", "5555", "진평화", "010-1111-6666","경기" , "**시"));
-		list.add(new Member(6, "M10006", "6666", "차공단", "010-1111-7777","충남" , "**시"));
-		return list;
-	};
+//	public ArrayList<Member> getMemberList() {
+//		ArrayList<Member> list = new ArrayList<Member>();
+//		list.add(new Member(1, "M10001", "1111", "김행복", "010-1111-2222","서울" , "**구"));
+//		list.add(new Member(2, "M10002", "2222", "이축복", "010-1111-3333","부산" , "**구"));
+//		list.add(new Member(3, "M10003", "3333", "장믿음", "010-1111-4444","서울" , "**구"));
+//		list.add(new Member(4, "M10004", "4444", "최사랑", "010-1111-5555","경기" , "**시"));
+//		list.add(new Member(5, "M10005", "5555", "진평화", "010-1111-6666","경기" , "**시"));
+//		list.add(new Member(6, "M10006", "6666", "차공단", "010-1111-7777","충남" , "**시"));
+//		return list;
+//	};
 	
 //안맞음 db에 넣어서 안바꿈	
 //	public ArrayList<Category getCategoryList() {

@@ -3,6 +3,6 @@
 <html>
 <body>
 <h2>쇼핑몰</h2>
-<a href="http://localhost:8080/top">마켓</a><br/>
+<%response.sendRedirect("market/top"); %>
 </body>
 </html>

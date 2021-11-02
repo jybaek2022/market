@@ -8,16 +8,28 @@ public class Member {
 	private String memberPhone;
 	private String memberAddress1;
 	private String memberAddress2;
+	private String memberJoinDate;
+	private String memberBirthDate;
+	private String memberGender;
+	private String memberCheck;
+	
 	
 	public Member() {}
-	public Member(int memberNo, String memberId, String memberPw, String memberName, String memberPhone, String memberAddress1, String memberAddress2) {
+	public Member(int memberNo, String memberId, 
+			String memberPw, String memberName, String memberPhone, 
+			String memberAddress1, String memberAddress2, String memberJoinDate, 
+			String memberBirthDate, String memberGender, String memberCheck) {
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.memberPw = memberPw;
 		this.memberName = memberName;
 		this.memberPhone = memberPhone;
 		this.memberAddress1 = memberAddress1;
-		this.memberAddress2 = memberAddress2;		
+		this.memberAddress2 = memberAddress2;
+		this.memberJoinDate = memberJoinDate;
+		this.memberBirthDate = memberBirthDate;
+		this.memberGender = memberGender;
+		this.memberCheck = memberCheck;
 	}
 
 	public int getMemberNo() {
@@ -76,4 +88,28 @@ public class Member {
 		this.memberAddress2 = memberAddress2;
 	}
 	
+	public String getMemberJoinDate() {
+		return memberJoinDate;
+	}
+	public void setMemberJoinDate(String memberJoinDate) {
+		this.memberJoinDate = memberJoinDate;
+	}
+	public String getMemberBirthDate() {
+		return memberBirthDate;
+	}
+	public void setMemberBirthDate(String memberBirthDate) {
+		this.memberBirthDate = memberBirthDate;
+	}
+	public String getMemberGender() {
+		return memberGender;
+	}
+	public void setMemberGender(String memberGender) {
+		this.memberGender = memberGender;
+	}
+	public String getMemberCheck() {
+		return memberCheck;
+	}
+	public void setMemberCheck(String memberCheck) {
+		this.memberCheck = memberCheck;
+	}
 }
