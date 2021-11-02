@@ -55,9 +55,10 @@ public class MarketService {
 		if (loginedMember == null) {
 			throw new MarketException(ErrorCode.InvaliddateUserErrCode);
 		}else {//이부분 list로 받아서 list로 전달하고싶었으나 안됨. 주소만가져오는건지... 그냥 배열로 넣음.
-			String[] value = new String[2];
+			String[] value = new String[3];
 			value[0] = loginedMember.getMemberName();
 			value[1] = loginedMember.getMemberCheck();
+			value[2] = loginedMember.getMemberId();
 			return value;
 		}
 	}
@@ -74,5 +75,16 @@ public class MarketService {
 		} catch (DuplicateKeyException e) {
 			throw new MarketException(ErrorCode.DuplicatedAccountErrCode, e);
 		}
+	}
+	
+	//구매
+	public void purchase(String memberId, int productNo, int salesCount, int productPrice) throws MarketException {
+		Sales sales = new Sales();
+		sales.setMemberId(memberId);
+		sales.setProductNo(productNo);
+		sales.setSalesCount(salesCount);
+		sales.setProductPrice(productPrice);
+		
+		sqlSession2.insert("purchase", sales);
 	}
 }

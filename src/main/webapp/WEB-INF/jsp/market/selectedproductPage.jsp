@@ -3,6 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
     
+<%Object id = session.getAttribute("id");
+String memberId = (String) id;%>
+
 <form action = "purchase">
 <table>
 	<tr>
@@ -24,7 +27,7 @@
 		<td>품  목  명 : ${product_info.getProductName()}</td>
 	</tr>
 	<tr>
-		<td>카 테 고 리 : ${product_info.getProductName()}</td>
+		<td>카 테 고 리 : ${product_info.getProductCatCode()}</td>
 	</tr>
 	<tr>
 		<td>품 목 상 세 : ${product_info.getProductDetail()}</td>
@@ -33,14 +36,16 @@
 		<td>단      가 : ${product_info.getProductPrice()}</td>
 	</tr>
 	<tr>
-		<td>수      량 : <input type = "number" name = "pCount" value ="구매수량"><td>
+		<td>수      량 : <input type = "number" name = "salesCount" value ="구매수량"><td>
 	</tr>
 	<tr>
-		<td><button type = "submit" onClick="location.href='cart'">구매하기</button></td>
-		<td><button type = "submit" onClick="location.href='cart'">장바구니담고 계속 쇼핑하기</button></td>
+		<td><button type = "submit">구매하기</button></td>
+		<td><button type = "submit">장바구니담고 계속 쇼핑하기</button></td>
 	</tr>
 </table>
+	<input type = "hidden" name = "memberId" value=<%=memberId%>>
+	<input type = "hidden" name = "productNo" value="${product_info.getProductNo()}">
+	<input type = "hidden" name = "productPrice" value="${product_info.getProductPrice()}">	
 </form>
-
 
 <br>상품리뷰보여주기

@@ -1,10 +1,9 @@
 package gu.market.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession; // 로그인하면서추가
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -193,15 +192,15 @@ public class MarketController {
 		return mv;
 	}
 	// 구매하기 ( 재고 및 정보전달 후 구매완료페이지로만 넘어가게. 나중에 결제 추가)
-		@RequestMapping(value = "/purchase")
-		public ModelAndView purchase(HttpServletRequest request) throws Exception {
-			String productNo = request.getParameter("productNo");
-			Product productInfo = marketSvc.selectProductOne(productNo);
-
-			ModelAndView mv = new ModelAndView("market/selectedproductPage");
-			mv.addObject("product_info", productInfo);
-
-			return mv;
+		@RequestMapping(value = "/purchase", method = {RequestMethod.GET, RequestMethod.POST})
+		public String purchase(HttpServletRequest request) throws Exception {
+			String memberId = request.getParameter("memberId");
+			int productNo = Integer.parseInt(request.getParameter("productNo"));
+			int salesCount = Integer.parseInt(request.getParameter("salesCount"));
+			int productPrice = Integer.parseInt(request.getParameter("productPrice"));
+			
+			marketSvc.purchase(memberId, productNo, salesCount, productPrice);
+			return "market/purchaseF";
 		}
 	
 	//admin contoller로 이동시켜야할것들

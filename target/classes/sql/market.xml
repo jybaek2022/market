@@ -26,7 +26,7 @@
     </select> 
     
     <select id="login" parameterType="String" resultType="gu.market.repository.model.Member">
-        SELECT memberName, memberCheck
+        SELECT memberName, memberCheck, memberId
           FROM member
          WHERE memberId=#{memberId} and memberPw=#{memberPw}
     </select>
@@ -34,5 +34,10 @@
     <insert id="joinMember" parameterType="gu.market.repository.model.Member" >
         INSERT INTO member (memberId, memberPw, memberName)
         VALUES (#{memberId}, #{memberPw}, #{memberName})
+    </insert>
+    
+    <insert id="purchase" parameterType="gu.market.repository.model.Sales">
+        INSERT INTO sales (memberId, productNo, salesCount, productPrice)
+        VALUES (#{memberId}, #{productNo}, #{salesCount}, #{productPrice})
     </insert>
 </mapper>
