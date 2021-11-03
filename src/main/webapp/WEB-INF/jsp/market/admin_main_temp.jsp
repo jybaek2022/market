@@ -54,7 +54,7 @@ if(admin !=null){
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none" href = ""><b>상품관리(상품추가/조회/삭제)</b></a>
+						<a style="text-decoration:none" href ="addProduct"><b>상품추가</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">

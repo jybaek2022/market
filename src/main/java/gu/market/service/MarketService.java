@@ -64,11 +64,18 @@ public class MarketService {
 	}
 	
 	// 회원가입
-	public void join(String id, String pw, String name) throws MarketException {
+	public void join(String id, String pw, String name, String phone, 
+			String address1, String address2, String gender, String birthDate)
+					throws MarketException {
 		Member member = new Member();
 		member.setMemberId(id);
 		member.setMemberPw(pw);
 		member.setMemberName(name);
+		member.setMemberPhone(phone);
+		member.setMemberAddress1(address1);
+		member.setMemberAddress2(address2);
+		member.setMemberGender(gender);
+		member.setMemberBirthDate(birthDate);
 		
 		try {
 			sqlSession2.insert("joinMember", member);
@@ -86,5 +93,24 @@ public class MarketService {
 		sales.setProductPrice(productPrice);
 		
 		sqlSession2.insert("purchase", sales);
+	}
+	
+	//관리자 --- 품목추가
+	public void addProduct(String pName, int pCCode, String pDetail, int pPrice,
+			int pStock, String pStatus, String pImgSrc) throws MarketException {
+		Product product = new Product();
+		product.setProductName(pName);
+		product.setProductCatCode(pCCode);
+		product.setProductDetail(pDetail);
+		product.setProductPrice(pPrice);
+		product.setProductStock(pStock);
+		product.setProductStatus(pStatus);
+		product.setProductImgSrc(pImgSrc);
+		
+		try {
+			sqlSession2.insert("addProduct", product);
+		} catch (DuplicateKeyException e) {
+			throw new MarketException(ErrorCode.DuplicatedAccountErrCode, e);
+		}
 	}
 }

@@ -29,7 +29,7 @@ public class MarketController {
 	// 메인을 top 으로
 	@RequestMapping(value = "/top")
 	public ModelAndView top(HttpSession session) throws Exception {
-		ModelAndView mv = new ModelAndView("market/top");
+		ModelAndView mv = new ModelAndView("/market/top");
 		mv.addObject("name", sessionManager.getName(session));
 		return mv;
 	}
@@ -77,24 +77,27 @@ public class MarketController {
 	//회원가입
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String getJoin(HttpSession session) throws Exception {
-
 		return "market/joinForm";
 	}
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String postJoin(HttpServletRequest request) throws MarketException {
 		if (sessionManager.isLogin(request.getSession()))
-			return "redirect:/top";
+			return "redirect:/market/top";
 
 		// 로그인 상태가 아닐 경우
 		String id = request.getParameter("id");
 		String pwd = request.getParameter("pw");
 		String name = request.getParameter("name");
-		System.out.println("id:" + id + ", pw:" + pwd + ", name: "+ name);
+		String phone = request.getParameter("phone");
+		String address1 = request.getParameter("address1");
+		String address2 = request.getParameter("address2");
+		String gender = request.getParameter("gender");
+		String birthDate = request.getParameter("birthDate");
 
-		marketSvc.join(id, pwd, name);
+		marketSvc.join(id, pwd, name, phone, address1, address2, gender, birthDate);
 		//sessionManager.login(request.getSession(), name);
-		return "redirect:/top";
+		return "redirect:/market/top";
 	}
 	
 	// 로그인 페이지
@@ -192,20 +195,42 @@ public class MarketController {
 		return mv;
 	}
 	// 구매하기 ( 재고 및 정보전달 후 구매완료페이지로만 넘어가게. 나중에 결제 추가)
-		@RequestMapping(value = "/purchase", method = {RequestMethod.GET, RequestMethod.POST})
-		public String purchase(HttpServletRequest request) throws Exception {
-			String memberId = request.getParameter("memberId");
-			int productNo = Integer.parseInt(request.getParameter("productNo"));
-			int salesCount = Integer.parseInt(request.getParameter("salesCount"));
-			int productPrice = Integer.parseInt(request.getParameter("productPrice"));
-			
-			marketSvc.purchase(memberId, productNo, salesCount, productPrice);
-			return "market/purchaseF";
-		}
+	@RequestMapping(value = "/purchase", method = {RequestMethod.GET, RequestMethod.POST})
+	public String purchase(HttpServletRequest request) throws Exception {
+		String memberId = request.getParameter("memberId");
+		int productNo = Integer.parseInt(request.getParameter("productNo"));
+		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
+		int productPrice = Integer.parseInt(request.getParameter("productPrice"));
+		
+		marketSvc.purchase(memberId, productNo, salesCount, productPrice);
+		return "market/purchaseF";
+	}
 	
 	//admin contoller로 이동시켜야할것들
+	//관리자메인페이지
 	@RequestMapping(value="/adminMain", method = RequestMethod.GET) 
 	public String adminMain() {
 		return "market/admin_main_temp";   
 	} 
+	
+	//상품등록
+	
+	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
+	public String getAddProduct(HttpSession session) throws Exception {
+		return "market/addProductPage";
+	}
+	
+	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+	public String postAddProduct(HttpServletRequest request) throws MarketException {
+		String pName = request.getParameter("pName");
+		int pCCode = Integer.parseInt(request.getParameter("pCCode"));
+		String pDetail = request.getParameter("pDetail");
+		int pPrice = Integer.parseInt(request.getParameter("pPrice"));
+		int pStock = Integer.parseInt(request.getParameter("pStock"));
+		String pStatus = request.getParameter("pStatus");
+		String pImgSrc = request.getParameter("pImgSrc");
+
+		marketSvc.addProduct(pName, pCCode, pDetail, pPrice, pStock, pStatus, pImgSrc);
+		return "redirect:/market/adminMain";
+	}
 }

@@ -8,7 +8,7 @@
     </select> 
 
     <select id="selectProductOne" parameterType="String" resultType="gu.market.repository.model.Product">
-        SELECT productNo, productCatCode, productName, productDetail, productPrice, productCount
+        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock
           FROM product
          WHERE productNo=#{productNo} 
     </select> 
@@ -32,12 +32,16 @@
     </select>
     
     <insert id="joinMember" parameterType="gu.market.repository.model.Member" >
-        INSERT INTO member (memberId, memberPw, memberName)
-        VALUES (#{memberId}, #{memberPw}, #{memberName})
+        INSERT INTO member (memberId, memberPw, memberName, memberPhone, memberAddress1, memberAddress2, memberGender, memberBirthDate)
+        VALUES (#{memberId}, #{memberPw}, #{memberName}, #{memberPhone}, #{memberAddress1}, #{memberAddress2}, #{memberGender}, #{memberBirthDate})
     </insert>
     
     <insert id="purchase" parameterType="gu.market.repository.model.Sales">
         INSERT INTO sales (memberId, productNo, salesCount, productPrice)
         VALUES (#{memberId}, #{productNo}, #{salesCount}, #{productPrice})
+    </insert>
+        <insert id="addProduct" parameterType="gu.market.repository.model.Product">
+        INSERT INTO product (productName, productCatCode, productDetail, productPrice, productStock, productStatus, productImgSrc)
+        VALUES (#{productName}, #{productCatCode}, #{productDetail}, #{productPrice}, #{productStock}, #{productStatus}, #{productImgSrc})
     </insert>
 </mapper>

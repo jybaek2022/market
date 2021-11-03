@@ -6,19 +6,19 @@ import gu.market.repository.model.Member;
 import gu.market.repository.model.Product;
 
 public class Dummy {
-	public ArrayList<Product> getProductList() {
-		ArrayList<Product> list = new ArrayList<Product>();
-		list.add(new Product(0, 0, "P0001", "건강한펫 동결건조 소프트 통살 연어 스틱 100g", 50000,10));
-		list.add(new Product(1, 1, "P0002", "건강한펫 동결건조 착한북어 스틱 100g",  12000,10));
-		list.add(new Product(2, 2, "P0003", "건강한펫 동결건조 치킨텐더 대왕 도시락 600g", 30000,10));
-		list.add(new Product(3, 3, "P0004", "건강한펫 동결건조 착한치킨 스틱 대왕 도시락 700g", 51000,10));
-		list.add(new Product(4, 4, "P0005", "건강한펫 동결건조 착한북어 스틱 대왕 도시락 500g",84000,10));
-		list.add(new Product(5, 5, "P0006", "건강한펫 동결건조 뉴 소프트 통살 연어 대왕 도시락 500g",18000,10));
-		list.add(new Product(6, 6,  "P0007", "건강한펫 동결건조 연근 방울토마토 30g / 강아지 간식",20000,10));
-		list.add(new Product(7, 7,  "P0008", "건강한펫 동결건조 착한북어 스틱 500", 60000,10));
-		list.add(new Product(8, 8,  "P0009", "건강한펫 동결건조 치킨텐더 200g / 강아지 고양이간식",45000,10));
-		return list;
-	}
+//	public ArrayList<Product> getProductList() {
+//		ArrayList<Product> list = new ArrayList<Product>();
+//		list.add(new Product(0, 0, "P0001", "건강한펫 동결건조 소프트 통살 연어 스틱 100g", 50000,10));
+//		list.add(new Product(1, 1, "P0002", "건강한펫 동결건조 착한북어 스틱 100g",  12000,10));
+//		list.add(new Product(2, 2, "P0003", "건강한펫 동결건조 치킨텐더 대왕 도시락 600g", 30000,10));
+//		list.add(new Product(3, 3, "P0004", "건강한펫 동결건조 착한치킨 스틱 대왕 도시락 700g", 51000,10));
+//		list.add(new Product(4, 4, "P0005", "건강한펫 동결건조 착한북어 스틱 대왕 도시락 500g",84000,10));
+//		list.add(new Product(5, 5, "P0006", "건강한펫 동결건조 뉴 소프트 통살 연어 대왕 도시락 500g",18000,10));
+//		list.add(new Product(6, 6,  "P0007", "건강한펫 동결건조 연근 방울토마토 30g / 강아지 간식",20000,10));
+//		list.add(new Product(7, 7,  "P0008", "건강한펫 동결건조 착한북어 스틱 500", 60000,10));
+//		list.add(new Product(8, 8,  "P0009", "건강한펫 동결건조 치킨텐더 200g / 강아지 고양이간식",45000,10));
+//		return list;
+//	}
 	
 //	public ArrayList<Member> getMemberList() {
 //		ArrayList<Member> list = new ArrayList<Member>();
