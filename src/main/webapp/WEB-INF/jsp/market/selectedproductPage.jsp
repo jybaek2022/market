@@ -1,12 +1,12 @@
 <%@page import="javax.websocket.SendResult"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-    
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>   
 <%Object id = session.getAttribute("id");
 String memberId = (String) id;%>
 
-<form action = "purchase">
+<form action = "connectionFNC" method = "POST">
 <table>
 	<tr>
 	<td rowspan = 8> 
@@ -24,28 +24,29 @@ String memberId = (String) id;%>
 	  	</td>
 	</tr>	
 	<tr>
-		<td>г╟  ╦Я  ╦М : ${product_info.getProductName()}</td>
+		<td>М▓┬  К╙╘  К╙┘ : ${product_info.getProductName()}</td>
 	</tr>
 	<tr>
-		<td>д╚ ев ╟М ╦╝ : ${product_info.getProductCatCode()}</td>
+		<td>Л╧╢ М┘▄ ЙЁ═ К╕╛ : ${product_info.getProductCatCode()}</td>
 	</tr>
 	<tr>
-		<td>г╟ ╦Я ╩С ╪╪ : ${product_info.getProductDetail()}</td>
+		<td>М▓┬ К╙╘ Л┐│ Л└╦ : ${product_info.getProductDetail()}</td>
 	</tr>
 	<tr>
-		<td>╢э      ╟║ : ${product_info.getProductPrice()}</td>
+		<td>К▀╗      Й╟─ : ${product_info.getProductPrice()}</td>
 	</tr>
 	<tr>
-		<td>╪Ж      ╥╝ : <input type = "number" name = "salesCount" value ="╠╦╦е╪Ж╥╝"><td>
+		<td>Л┬≤      К÷┴ : <input type = "number" name = "salesCount" value ="Й╣╛К╖╓Л┬≤К÷┴"><td>
 	</tr>
 	<tr>
-		<td><button type = "submit">╠╦╦его╠Б</button></td>
-		<td><button type = "submit">юЕ╧ы╠╦╢о╢Ц╟М ╟Х╪с ╪Нгнго╠Б</button></td>
+		<td><button type = "submit" name = "button" value = "purchase">Й╣╛К╖╓М∙≤Й╦╟</button></td>
+		<td><button type = "submit" name = "button" value = "addCart">Л·╔К╟■Й╣╛К▀┬К▀╢Й╦╟</button></td>
 	</tr>
 </table>
 	<input type = "hidden" name = "memberId" value=<%=memberId%>>
 	<input type = "hidden" name = "productNo" value="${product_info.getProductNo()}">
+	<input type = "hidden" name = "productName" value="${product_info.getProductName()}">
 	<input type = "hidden" name = "productPrice" value="${product_info.getProductPrice()}">	
 </form>
 
-<br>╩Сг╟╦╝╨Д╨╦©╘аж╠Б
+<br>Л┐│М▓┬К╕╛К╥╟КЁ╢Л≈╛Лё╪Й╦╟

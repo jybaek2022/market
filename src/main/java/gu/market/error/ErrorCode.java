@@ -2,7 +2,8 @@ package gu.market.error;
 
 public enum ErrorCode {
 	DuplicatedAccountErrCode(1, "duplicate account error"),
-	InvaliddateUserErrCode(2, "invalid user");
+	InvaliddateUserErrCode(2, "invalid user"),
+	UnloginedStatus(3, "unlogined");
 	
 	private final int errCode;
 	private final String errMessage;

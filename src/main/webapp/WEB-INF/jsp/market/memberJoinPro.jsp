@@ -2,10 +2,10 @@
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-
-	<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>
+	<% request.setCharacterEncoding("UTF-8"); %>
 	
 	<% 	
 		String no = request.getParameter("no");

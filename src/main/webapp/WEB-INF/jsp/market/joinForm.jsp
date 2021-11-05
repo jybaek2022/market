@@ -1,54 +1,54 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>
 <%
 String path = application.getContextPath();
 %>    
 
 <div align="center">
-<h1>х╦©Ь╟║ют</h1>
+<h1>М ▄Л⌡░Й╟─Л·┘</h1>
 	<hr width="700" color="black" size="3"/>
 	<br>
 	<form method="post" action="join" enctype="multipart/form-data">
 		<table>
 			<tr height="50">
-				<td width="150"><b>╬фюл╣П</b></td>
-				<td width="300" align="center"><input type="text" name="id" placeholder="idют╥б" style="width:300px; height:30px"></td>
+				<td width="150"><b>Л∙└Л²╢К■■</b></td>
+				<td width="300" align="center"><input type="text" name="id" placeholder="idЛ·┘К═╔" style="width:300px; height:30px"></td>
 			</tr>
 			<tr height="50">
-				<td width="150"><b>╨Я╧п╧Ьхё</b></td>
-				<td width="300" align="center"><input type="password" name="pw" placeholder="pwют╥б" style="width:300px; height:30px"></td>
+				<td width="150"><b>К╧└К╟─К╡┬М≤╦</b></td>
+				<td width="300" align="center"><input type="password" name="pw" placeholder="pwЛ·┘К═╔" style="width:300px; height:30px"></td>
 			</tr>
 			<tr height="50">
-				<td width="150"><b>юл╦╖</b></td>
-				<td width="300" align="center"><input type="text" name="name" placeholder="юл╦╖ ют╥б" style="width:300px; height:40px"></td>
+				<td width="150"><b>Л²╢К╕└</b></td>
+				<td width="300" align="center"><input type="text" name="name" placeholder="Л²╢К╕└ Л·┘К═╔" style="width:300px; height:40px"></td>
 			</tr>
 			<tr height="50">
-				<td width="150"><b>юЭх╜╧Ьхё</b></td>
-				<td width="300" align="center"><input type="text" name="phone" placeholder="юЭх╜╧Ьхё ют╥б" style="width:300px; height:40px"></td>
+				<td width="150"><b>Л═└М≥■К╡┬М≤╦</b></td>
+				<td width="300" align="center"><input type="text" name="phone" placeholder="Л═└М≥■К╡┬М≤╦ Л·┘К═╔" style="width:300px; height:40px"></td>
 			</tr>
 			<tr height="50">
-				<td width="150"><b>аж╪р(╫ц╣╣)</b></td>
-				<td width="300" align="center"><input type="text" name="address1" placeholder="аж╪р ют╥б" style="width:300px; height:40px"></td>
+				<td width="150"><b>Лё╪Л├▄(Л▀°К▐└)</b></td>
+				<td width="300" align="center"><input type="text" name="address1" placeholder="Лё╪Л├▄ Л·┘К═╔" style="width:300px; height:40px"></td>
 			</tr>
 			<tr height="50">
-				<td width="150"><b>╩С╪╪аж╪р</b></td>
-				<td width="300" align="center"><input type="text" name="address2" placeholder="╩С╪╪аж╪р ют╥б" style="width:300px; height:40px"></td>
+				<td width="150"><b>Л┐│Л└╦Лё╪Л├▄</b></td>
+				<td width="300" align="center"><input type="text" name="address2" placeholder="Л┐│Л└╦Лё╪Л├▄ Л·┘К═╔" style="width:300px; height:40px"></td>
 			</tr>
 			<tr height="50">
-				<td width="150"><b>╪╨╨╟</b></td>
-				<td width="300" align="center"><input type="text" name="gender" placeholder="╪╨╨╟ ют╥б" style="width:300px; height:40px"></td>
+				<td width="150"><b>Л└╠КЁ└</b></td>
+				<td width="300" align="center"><input type="text" name="gender" placeholder="Л└╠КЁ└ Л·┘К═╔" style="width:300px; height:40px"></td>
 			</tr>
 			<tr height="50">
-				<td width="150"><b>╩ЩЁБ©Ыюо</b></td>
-				<td width="300" align="center"><input type="text" name="birthDate" placeholder="╩ЩЁБ©Ыюо ют╥б(yyyy-mm-dd)" style="width:300px; height:40px"></td>
+				<td width="150"><b>Л┐²К┘└Л⌡■Л²╪</b></td>
+				<td width="300" align="center"><input type="text" name="birthDate" placeholder="Л┐²К┘└Л⌡■Л²╪ Л·┘К═╔(yyyy-mm-dd)" style="width:300px; height:40px"></td>
 			</tr>
 		</table>
 	
 		<table>
 			<tr height="50">
 				<td colspan="2" align="center"><br>
-					<button type="submit">х╦©Ь╟║ют</button>
+					<button type="submit">М ▄Л⌡░Й╟─Л·┘</button>
 				</td>
 			</tr>
 		</table>

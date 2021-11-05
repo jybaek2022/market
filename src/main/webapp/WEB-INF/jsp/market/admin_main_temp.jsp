@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-
-<%request.setCharacterEncoding("EUC-KR");				
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%request.setCharacterEncoding("UTF-8");				
 
 String log = "";
 Object name = session.getAttribute("name");
@@ -18,21 +17,21 @@ if(admin !=null){
 	<div align="right">
 		<font size="2">
 				<%if(log != "") {%>
-					<%--°ü¸®ÀÚ ·Î±×ÀÎ½Ã ¹öÆ°Ãß°¡--%>
+					<%--ê´€ë¦¬ì ë¡œê·¸ì¸ì‹œ ë²„íŠ¼ì¶”ê°€--%>
 					<%if(adminCheck.equals("Y")){%>
-					<button type="button" onClick="location.href='top'">ÀÏ¹İÈ¸¿øÈ­¸é°¡±â</button>	
+					<button type="button" onClick="location.href='home'">ì¼ë°˜íšŒì›í™”ë©´ê°€ê¸°</button>	
 					<%}%>
-					<%=log %>´Ô &nbsp; <img alt="" src="../img/top1.jpg"> &nbsp;
-					<a style="text-decoration:none">ÁÖ¹®È®ÀÎ</a>&nbsp;
+					<%=log %>ë‹˜ &nbsp; <img alt="" src="../img/top1.jpg"> &nbsp;
+					<a style="text-decoration:none">ì£¼ë¬¸í™•ì¸</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="logout" style="text-decoration:none">·Î±×¾Æ¿ô</a>&nbsp;
+					<a href="logout" style="text-decoration:none">ë¡œê·¸ì•„ì›ƒ</a>&nbsp;
 				<%} else{%>
-					<a href="join" style="text-decoration:none">È¸¿ø°¡ÀÔ</a>&nbsp;
+					<a href="join" style="text-decoration:none">íšŒì›ê°€ì…</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="login" style="text-decoration:none">·Î±×ÀÎ</a>&nbsp;
+					<a href="login" style="text-decoration:none">ë¡œê·¸ì¸</a>&nbsp;
 				<%} %>
 					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a style="text-decoration:none">°í°´¼¾ÅÍ</a>&nbsp;
+					<a style="text-decoration:none">ê³ ê°ì„¼í„°</a>&nbsp;
 		</font>
 	</div>
 	<div align="center">
@@ -46,7 +45,7 @@ if(admin !=null){
 			<tr height="50">
 				<td width="180" align="center" id="dropdown">
 					<font size="3" color="black">
-						<a href="allMember" style="text-decoration:none"><b>È¸¿ø°ü¸®</b></a>
+						<a href="allMember" style="text-decoration:none"><b>íšŒì›ê´€ë¦¬</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">
@@ -54,7 +53,7 @@ if(admin !=null){
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none" href ="addProduct"><b>»óÇ°Ãß°¡</b></a>
+						<a style="text-decoration:none" href ="addProduct"><b>ìƒí’ˆì¶”ê°€</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">
@@ -62,7 +61,7 @@ if(admin !=null){
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none"><b>¿î¿µÇöÈ²</b></a>
+						<a style="text-decoration:none"><b>ìš´ì˜í˜„í™©</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">
@@ -70,10 +69,9 @@ if(admin !=null){
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none" href = "board6List"><b>Å¬·¹ÀÓ°ü¸®</b></a>
+						<a style="text-decoration:none" href = "board6List"><b>í´ë ˆì„ê´€ë¦¬</b></a>
 					</font>
 				</td>
 			</tr>
 		</table>
 	</div>
-	<div align="center"><img src ="../img/admin.jpg"></div>

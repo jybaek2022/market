@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-
-<h1>╠╦╦е©о╥А</h1>
-аж╪раЖ╦╕ ют╥бго╟М ©╘╠Б╪╜ юн╪╜ф╝╦╕ го╣╣╥о ╪Жа╓гь╬ъ╣й
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>
+<h1>Й╣╛К╖╓Л≥└Кё▄</h1>
+Лё╪Л├▄Л╖─К╔╪ Л·┘К═╔М∙≤ЙЁ═ Л≈╛Й╦╟Л└° Л²╦Л└°М┼╦К╔╪ М∙≤К▐└К║² Л┬≤Л═∙М∙╢Л∙╪К░╗
 <br>
-<button onclick = "location.href='../market/top'">х╗ю╦╥н╣╧╬ф╟║╠Б</button>
-<!-- ╟Ф╥н╟║.............? -->
+<button onclick = "location.href='../market/top'">М≥┬Л°╪К║°К▐▄Л∙└Й╟─Й╦╟</button>
+<!-- Й╡╫К║°Й╟─.............? -->

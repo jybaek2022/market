@@ -3,6 +3,7 @@ package gu.market.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import gu.market.repository.model.Product;
 import gu.market.error.MarketException;
 import gu.market.repository.model.Member;
+import gu.market.repository.model.Cart;
 import gu.market.service.MarketService;
 import gu.market.session.SessionManager;
 
@@ -26,18 +28,17 @@ public class MarketController {
 	@Autowired
 	private MarketService marketSvc;
 
-	// 메인을 top 으로
+	@RequestMapping(value = "/home")
+	public String home() throws Exception {
+		// 최상단 그림눌렀을때 홈으로 돌아가기
+		return "market/home";
+	}
+	
 	@RequestMapping(value = "/top")
 	public ModelAndView top(HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView("/market/top");
 		mv.addObject("name", sessionManager.getName(session));
 		return mv;
-	}
-
-	@RequestMapping(value = "/home")
-	public String home() throws Exception {
-		// 최상단 그림눌렀을때 홈으로 돌아가기
-		return "redirect:/top";
 	}
 
 	// 전체상품 dummy에서 받아오는 방법 - 안씀
@@ -83,7 +84,7 @@ public class MarketController {
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String postJoin(HttpServletRequest request) throws MarketException {
 		if (sessionManager.isLogin(request.getSession()))
-			return "redirect:/market/top";
+			return "redirect:/market/home";
 
 		// 로그인 상태가 아닐 경우
 		String id = request.getParameter("id");
@@ -97,14 +98,14 @@ public class MarketController {
 
 		marketSvc.join(id, pwd, name, phone, address1, address2, gender, birthDate);
 		//sessionManager.login(request.getSession(), name);
-		return "redirect:/market/top";
+		return "redirect:/market/home";
 	}
 	
 	// 로그인 페이지
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String getLogin(HttpSession session) throws Exception {
 		if (sessionManager.isLogin(session))
-			return "redirect:/market/top";
+			return "redirect:/market/home";
 
 		return "market/loginForm";
 	}
@@ -114,7 +115,7 @@ public class MarketController {
 	public String login(HttpServletRequest request) throws Exception {
 		// 이미 로그인 상태일 경우
 		if (sessionManager.isLogin(request.getSession()))
-			return "redirect:/market/top";
+			return "redirect:/market/home";
 
 		// 로그인 상태가 아닐 경우
 		String id = request.getParameter("id");
@@ -123,7 +124,7 @@ public class MarketController {
 
 		String[] value = marketSvc.memberlogin(id, pwd);
 		sessionManager.login(request.getSession(), value);
-		return "redirect:/market/top";
+		return "redirect:/market/home";
 	}
 
 	@RequestMapping("/logout")
@@ -133,7 +134,7 @@ public class MarketController {
 		}
 
 		session.invalidate();
-		return "redirect:/market/top";
+		return "redirect:/market/home";
 	}
 
 	// 한품목 선택했을때 읽기
@@ -194,10 +195,20 @@ public class MarketController {
 		mv.addObject("error_info", e);
 		return mv;
 	}
+	
+	//연결
+	@RequestMapping(value = "/connectionFNC", method = RequestMethod.POST)
+	public String connectionFNC(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String btn = request.getParameter("button");
+		if (btn.equals("purchase"))
+			return "forward:/market/purchase";
+		else
+			return "forward:/market/addCart";
+		}
 	// 구매하기 ( 재고 및 정보전달 후 구매완료페이지로만 넘어가게. 나중에 결제 추가)
 	@RequestMapping(value = "/purchase", method = {RequestMethod.GET, RequestMethod.POST})
-	public String purchase(HttpServletRequest request) throws Exception {
-		String memberId = request.getParameter("memberId");
+	public String purchase(HttpServletRequest request, HttpSession session) throws Exception {
+		String memberId = (String)session.getAttribute("id");
 		int productNo = Integer.parseInt(request.getParameter("productNo"));
 		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
 		int productPrice = Integer.parseInt(request.getParameter("productPrice"));
@@ -205,21 +216,47 @@ public class MarketController {
 		marketSvc.purchase(memberId, productNo, salesCount, productPrice);
 		return "market/purchaseF";
 	}
+	//장바구니보기
+	@RequestMapping(value = "/allCart")
+	public String allCart(ModelMap modelMap, HttpSession session) throws Exception {
+		String id = (String)session.getAttribute("id");
+		if(id==null) {
+			return "error/unloginedError";
+		}
+		
+		List<?> cartview = marketSvc.allCart(id);
+		if(cartview==null) { // 이거 안들어가는듯??
+			return "error/emptyList";
+		}
+		modelMap.addAttribute("cartview", cartview);
+		return "market/cartPage";
+	}
+	//장바구니추가
+	@RequestMapping(value = "/addCart", method = {RequestMethod.GET, RequestMethod.POST})
+	public String addCart(HttpServletRequest request) throws Exception {
+		String memberId = request.getParameter("memberId");
+		int productNo = Integer.parseInt(request.getParameter("productNo"));
+		String productName = request.getParameter("productName");
+		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
+		int productPrice = Integer.parseInt(request.getParameter("productPrice"));
+		
+		marketSvc.addCart(memberId, productNo, productName, salesCount, productPrice);
+		return "forward:/market/allCart";
+	}
 	
 	//admin contoller로 이동시켜야할것들
 	//관리자메인페이지
-	@RequestMapping(value="/adminMain", method = RequestMethod.GET) 
+	@RequestMapping(value="/adminMain") 
 	public String adminMain() {
-		return "market/admin_main_temp";   
+		return "market/admin_home";
 	} 
 	
-	//상품등록
-	
+	//상품등록get
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
 	public String getAddProduct(HttpSession session) throws Exception {
 		return "market/addProductPage";
 	}
-	
+	//상품등록post
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
 	public String postAddProduct(HttpServletRequest request) throws MarketException {
 		String pName = request.getParameter("pName");

@@ -95,6 +95,24 @@ public class MarketService {
 		sqlSession2.insert("purchase", sales);
 	}
 	
+	// 장바구니보기
+	public List<?> allCart(String id) throws Exception {
+		
+		return sqlSession2.selectList("allCart", id);
+	}
+	//장바구니추가
+	public void addCart(String memberId, int productNo, String productName, int salesCount, int productPrice) throws MarketException {
+		Cart cart = new Cart();
+		cart.setMemberId(memberId);
+		cart.setProductNo(productNo);
+		cart.setProductName(productName);
+		cart.setSalesCount(salesCount);
+		cart.setProductPrice(productPrice);
+		
+		sqlSession2.insert("addCart", cart);
+	}
+	
+
 	//관리자 --- 품목추가
 	public void addProduct(String pName, int pCCode, String pDetail, int pPrice,
 			int pStock, String pStatus, String pImgSrc) throws MarketException {
