@@ -8,7 +8,7 @@
     </select> 
 
     <select id="selectProductOne" parameterType="String" resultType="gu.market.repository.model.Product">
-        SELECT productNo, productCatCode, productName, productDetail, productPrice, productCount
+        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock
           FROM product
          WHERE productNo=#{productNo} 
     </select> 
@@ -18,9 +18,51 @@
           FROM product
          WHERE productCatCode=2
     </select> 
-    	<select id="newProduct" resultType="gu.market.repository.model.Product">
+    
+    <select id="newProduct" resultType="gu.market.repository.model.Product">
         SELECT productNo, productCatCode, productName, productDetail, productPrice
           FROM product
       ORDER BY productAddDate DESC limit 3 
+    </select> 
+    
+    <select id="login" parameterType="String" resultType="gu.market.repository.model.Member">
+        SELECT memberName, memberCheck, memberId
+          FROM member
+         WHERE memberId=#{memberId} and memberPw=#{memberPw}
+    </select>
+
+    <insert id="joinMember" parameterType="gu.market.repository.model.Member" >
+        INSERT INTO member (memberId, memberPw, memberName, memberPhone, memberAddress1, memberAddress2, memberGender, memberBirthDate)
+        VALUES (#{memberId}, #{memberPw}, #{memberName}, #{memberPhone}, #{memberAddress1}, #{memberAddress2}, #{memberGender}, #{memberBirthDate})
+    </insert>
+    
+    <insert id="purchase" parameterType="gu.market.repository.model.Sales">
+        INSERT INTO sales (memberId, productNo, salesCount, productPrice)
+        VALUES (#{memberId}, #{productNo}, #{salesCount}, #{productPrice})
+    </insert>
+
+    <insert id="addProduct" parameterType="gu.market.repository.model.Product">
+        INSERT INTO product (productName, productCatCode, productDetail, productPrice, productStock, productStatus, productImgSrc)
+        VALUES (#{productName}, #{productCatCode}, #{productDetail}, #{productPrice}, #{productStock}, #{productStatus}, #{productImgSrc})
+    </insert>
+
+   	<select id="allCart" resultType="gu.market.repository.model.Cart">
+       SELECT productName, salesCount, productPrice 
+       FROM cart
+       WHERE memberId=#{id}
+    </select>
+   
+    <insert id="addCart" parameterType="gu.market.repository.model.Cart">
+        INSERT INTO cart (memberId, productNo, productName, salesCount, productPrice)
+        VALUES (#{memberId}, #{productNo}, #{productName}, #{salesCount}, #{productPrice})
+    </insert>
+   	<select id="allMember" resultType="gu.market.repository.model.Member">
+        SELECT memberId, memberName, memberPhone, memberAddress1, memberAddress2, memberJoinDate, memberBirthDate, memberGender, memberCheck
+        FROM member
+    </select> 
+    <select id="selectMemberOne" parameterType="String" resultType="gu.market.repository.model.Member">
+        SELECT memberId, memberName, memberPhone, memberAddress1, memberAddress2, memberJoinDate, memberBirthDate, memberGender, memberCheck
+        FROM member
+        WHERE memberId=#{memberId} 
     </select> 
 </mapper>

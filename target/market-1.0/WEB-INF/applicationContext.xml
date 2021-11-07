@@ -38,7 +38,7 @@
 	</bean>
 
 	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-		  p:driverClassName="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" p:url="jdbc:log4jdbc:mysql://localhost/market" 
+		  p:driverClassName="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" p:url="jdbc:log4jdbc:mysql://localhost/market?zeroDateTimeBehavior=convertToNull" 
           p:username="root" p:password="1111"
           p:initialSize="2"
           p:maxActive="30"
@@ -72,5 +72,16 @@
 			<tx:method name="*" rollback-for="Exception"/>
 		</tx:attributes>
 	</tx:advice>
+	    
+	<bean id="txManager2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource2" />
+    </bean>
+
+	<tx:advice id="txAdvice2" transaction-manager="txManager2">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	    
 	    
 </beans>

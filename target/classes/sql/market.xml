@@ -56,5 +56,13 @@
         INSERT INTO cart (memberId, productNo, productName, salesCount, productPrice)
         VALUES (#{memberId}, #{productNo}, #{productName}, #{salesCount}, #{productPrice})
     </insert>
-
+   	<select id="allMember" resultType="gu.market.repository.model.Member">
+        SELECT memberId, memberName, memberPhone, memberAddress1, memberAddress2, memberJoinDate, memberBirthDate, memberGender, memberCheck
+        FROM member
+    </select> 
+    <select id="selectMemberOne" parameterType="String" resultType="gu.market.repository.model.Member">
+        SELECT memberId, memberName, memberPhone, memberAddress1, memberAddress2, memberJoinDate, memberBirthDate, memberGender, memberCheck
+        FROM member
+        WHERE memberId=#{memberId} 
+    </select> 
 </mapper>

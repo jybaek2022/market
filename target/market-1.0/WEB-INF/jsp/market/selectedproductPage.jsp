@@ -1,42 +1,52 @@
 <%@page import="javax.websocket.SendResult"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>   
+<%Object id = session.getAttribute("id");
+String memberId = (String) id;%>
 
-<%//String productNo = request.getParameter("productNo"); %>
-
+<form action = "connectionFNC" method = "POST">
 <table>
 	<tr>
-	<td rowspan = 4> 
+	<td rowspan = 8> 
 		<c:catch var="e" >
-	  		<c:import url="img/${product_info.getProductNo()}.jpg" var="imgSrc"/>
+	  		<c:import url="../img/${product_info.getProductNo()}.jpg" var="imgSrc"/>
 	  	</c:catch>
 	  	<c:choose>
-	  		<c:when test="${!empty e}">
-	  	  		<img src="img/${product_info.getProductNo()}.jpg">
+	  		<c:when test="${empty e}">
+	  	  		<img height = "600" src="../img/${product_info.getProductNo()}.jpg">
 	  		</c:when>
 	  		<c:otherwise>
-	    		<img src="img/${product_info.getProductNo()}.jpg">
+	    		<img src="../img/logo.png">
 	  		</c:otherwise>
 	  	</c:choose>
 	  	</td>
 	</tr>	
 	<tr>
-		<td>г╟  ╦Я  ╦М : ${product_info.getProductName()}</td>
+		<td>М▓┬  К╙╘  К╙┘ : ${product_info.getProductName()}</td>
 	</tr>
 	<tr>
-		<td>д╚ ев ╟М ╦╝ : ${product_info.getProductName()}</td>
+		<td>Л╧╢ М┘▄ ЙЁ═ К╕╛ : ${product_info.getProductCatCode()}</td>
 	</tr>
 	<tr>
-		<td>г╟ ╦Я ╩С ╪╪ : ${product_info.getProductDetail()}</td>
+		<td>М▓┬ К╙╘ Л┐│ Л└╦ : ${product_info.getProductDetail()}</td>
 	</tr>
 	<tr>
-		<td>╢э      ╟║ : ${product_info.getProductPrice()}</td>
+		<td>К▀╗      Й╟─ : ${product_info.getProductPrice()}</td>
 	</tr>
-	
+	<tr>
+		<td>Л┬≤      К÷┴ : <input type = "number" name = "salesCount" value ="Й╣╛К╖╓Л┬≤К÷┴"><td>
+	</tr>
+	<tr>
+		<td><button type = "submit" name = "button" value = "purchase">Й╣╛К╖╓М∙≤Й╦╟</button></td>
+		<td><button type = "submit" name = "button" value = "addCart">Л·╔К╟■Й╣╛К▀┬К▀╢Й╦╟</button></td>
+	</tr>
 </table>
-<form action = "">
-	╪Ж╥╝ <input type = "number" name = "pCount" value =" ╠╦╦е╪Ж╥╝">
+	<input type = "hidden" name = "memberId" value=<%=memberId%>>
+	<input type = "hidden" name = "productNo" value="${product_info.getProductNo()}">
+	<input type = "hidden" name = "productName" value="${product_info.getProductName()}">
+	<input type = "hidden" name = "productPrice" value="${product_info.getProductPrice()}">	
 </form>
-<button>╠╦╦его╠Б</button>
-<br>╩Сг╟╦╝╨Д╨╦©╘аж╠Б
+
+<br>Л┐│М▓┬К╕╛К╥╟КЁ╢Л≈╛Лё╪Й╦╟

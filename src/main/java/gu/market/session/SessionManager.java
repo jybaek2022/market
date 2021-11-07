@@ -8,6 +8,16 @@ public class SessionManager {
 	private final String ADMIN = "admin";
 	private final String ID = "id";
 	
+	// code
+	// 0x0111 IS_LOGIN
+	// 0x0112 NAMEL
+	//
+	// variable
+	// 변수 = 값 
+	// 변수명 
+	// 0x0001 "isLogin"
+	// 0x0002 "name"
+	
     public boolean isLogin(HttpSession session) {
     	Object isLogin = session.getAttribute(IS_LOGIN);
     	if(isLogin != null) {

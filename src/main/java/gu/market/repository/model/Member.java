@@ -1,5 +1,7 @@
 package gu.market.repository.model;
 
+import java.time.LocalDate;
+
 public class Member {
 	private int memberNo;
 	private String memberId;
@@ -8,8 +10,8 @@ public class Member {
 	private String memberPhone;
 	private String memberAddress1;
 	private String memberAddress2;
-	private String memberJoinDate;
-	private String memberBirthDate;
+	private LocalDate memberJoinDate;
+	private LocalDate memberBirthDate;
 	private String memberGender;
 	private String memberCheck;
 	
@@ -17,8 +19,8 @@ public class Member {
 	public Member() {}
 	public Member(int memberNo, String memberId, 
 			String memberPw, String memberName, String memberPhone, 
-			String memberAddress1, String memberAddress2, String memberJoinDate, 
-			String memberBirthDate, String memberGender, String memberCheck) {
+			String memberAddress1, String memberAddress2, LocalDate memberJoinDate, 
+			LocalDate memberBirthDate, String memberGender, String memberCheck) {
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.memberPw = memberPw;
@@ -88,16 +90,16 @@ public class Member {
 		this.memberAddress2 = memberAddress2;
 	}
 	
-	public String getMemberJoinDate() {
+	public LocalDate getMemberJoinDate() {
 		return memberJoinDate;
 	}
-	public void setMemberJoinDate(String memberJoinDate) {
+	public void setMemberJoinDate(LocalDate memberJoinDate) {
 		this.memberJoinDate = memberJoinDate;
 	}
-	public String getMemberBirthDate() {
+	public LocalDate getMemberBirthDate() {
 		return memberBirthDate;
 	}
-	public void setMemberBirthDate(String memberBirthDate) {
+	public void setMemberBirthDate(LocalDate memberBirthDate) {
 		this.memberBirthDate = memberBirthDate;
 	}
 	public String getMemberGender() {

@@ -1,5 +1,6 @@
 package gu.market.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -39,11 +40,6 @@ public class MarketService {
 	public Product selectProductOne(String productNo) throws Exception {
 		return sqlSession2.selectOne("selectProductOne", productNo);
 	}
-
-	//멤버선택
-	public Member selectMemberOne(String memberNo) throws Exception {
-		return sqlSession2.selectOne("selectMemberOne", memberNo);
-	}
 	
 	//로그인
 	public String[] memberlogin(String id, String pw) throws MarketException {
@@ -65,7 +61,7 @@ public class MarketService {
 	
 	// 회원가입
 	public void join(String id, String pw, String name, String phone, 
-			String address1, String address2, String gender, String birthDate)
+			String address1, String address2, String gender, LocalDate birthDate)
 					throws MarketException {
 		Member member = new Member();
 		member.setMemberId(id);
@@ -131,4 +127,12 @@ public class MarketService {
 			throw new MarketException(ErrorCode.DuplicatedAccountErrCode, e);
 		}
 	}
+	// 전체회원
+	public List<?> allMember() throws Exception {
+		return sqlSession2.selectList("allMember");
+	}
+	//멤버선택
+		public Member selectMemberOne(String memberId) throws Exception {
+			return sqlSession2.selectOne("selectMemberOne", memberId);
+		}
 }

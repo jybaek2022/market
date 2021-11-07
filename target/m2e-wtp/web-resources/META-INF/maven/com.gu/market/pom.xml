@@ -140,7 +140,12 @@
     		<artifactId>json</artifactId>
     		<version>20180813</version>
 		</dependency>
-		
+		<!-- localdate type binding용 -->
+		<dependency>
+		  	<groupId>org.mybatis</groupId>
+		  	<artifactId>mybatis-typehandlers-jsr310</artifactId>
+		  	<version>1.0.2</version>
+		</dependency>
     </dependencies>
 
   <build>

@@ -1,5 +1,8 @@
 package gu.market.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +26,7 @@ import gu.market.session.SessionManager;
 @Controller
 @RequestMapping(value = "/market")
 public class MarketController {
+	
 	private SessionManager sessionManager = new SessionManager();
 
 	@Autowired
@@ -94,7 +98,10 @@ public class MarketController {
 		String address1 = request.getParameter("address1");
 		String address2 = request.getParameter("address2");
 		String gender = request.getParameter("gender");
-		String birthDate = request.getParameter("birthDate");
+		
+		String birthdate = request.getParameter("birthDate");
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate birthDate = LocalDate.parse(birthdate, format);
 
 		marketSvc.join(id, pwd, name, phone, address1, address2, gender, birthDate);
 		//sessionManager.login(request.getSession(), name);
@@ -166,22 +173,6 @@ public class MarketController {
 		modelMap.addAttribute("productview", productview);
 		return "market/allProductPage";
 	}
-
-	@RequestMapping(value = "/allMember")
-	public String allMember() throws Exception {
-		return "market/allMemberPage";
-	}
-
-	@RequestMapping(value = "/selectedMember")
-	public ModelAndView selectedMember(HttpServletRequest request) throws Exception {
-		String memberNo = request.getParameter("memberNo");
-		Member memberInfo = marketSvc.selectMemberOne(memberNo);
-
-		ModelAndView mv = new ModelAndView("market/selectedMemberPage");
-		mv.addObject("member_info", memberInfo);
-
-		return mv;
-	}
 	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView handleAllException(Exception e) {
@@ -219,7 +210,15 @@ public class MarketController {
 	//장바구니보기
 	@RequestMapping(value = "/allCart")
 	public String allCart(ModelMap modelMap, HttpSession session) throws Exception {
-		String id = (String)session.getAttribute("id");
+
+//		String ID = "id";
+//		HashMap<String, String> map = new HashMap();
+//		map.put(ID, "lsw");
+//		map.get("id");
+		
+		String id = sessionManager.getId(session);
+		
+//		String id = (String)session.getAttribute("id");
 		if(id==null) {
 			return "error/unloginedError";
 		}
@@ -246,10 +245,10 @@ public class MarketController {
 	
 	//admin contoller로 이동시켜야할것들
 	//관리자메인페이지
-	@RequestMapping(value="/adminMain") 
-	public String adminMain() {
-		return "market/admin_home";
-	} 
+//	@RequestMapping(value="/adminMain") 
+//	public String adminMain() {
+//		return "admin/admin_home";
+//	} 
 	
 	//상품등록get
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
@@ -269,5 +268,24 @@ public class MarketController {
 
 		marketSvc.addProduct(pName, pCCode, pDetail, pPrice, pStock, pStatus, pImgSrc);
 		return "redirect:/market/adminMain";
+	}
+	//전체품목
+	@RequestMapping(value = "/allMember")
+	public String allMember(ModelMap modelMap) throws Exception {
+		List<?> memberview = marketSvc.allMember();
+
+		modelMap.addAttribute("memberview", memberview);
+		return "admin/allMemberPage";
+	}
+
+	@RequestMapping(value = "/selectedMember")
+	public ModelAndView selectedMember(HttpServletRequest request) throws Exception {
+		String memberId = request.getParameter("memberId");
+		Member memberInfo = marketSvc.selectMemberOne(memberId);
+
+		ModelAndView mv = new ModelAndView("admin/selectedMemberPage");
+		mv.addObject("member_info", memberInfo);
+
+		return mv;
 	}
 }

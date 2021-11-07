@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 
 	<%
+		String adminPath = "http://localhost:8080/admin/adminMain";
+	
 		request.setCharacterEncoding("UTF-8");				
 	
 		//String log = "백종윤";//session 못받아서 그냥 넣음
@@ -22,7 +24,7 @@
 				<%if(log != "") {%>
 					<%--관리자 로그인시 버튼추가--%>
 					<%if(adminCheck.equals("Y")){%>
-					<button type="button" onClick="location.href='adminMain'">관리자화면가기</button>	
+					<button type="button" onClick="location.href='<%=adminPath%>'">관리자화면가기</button>	
 					<%}%>
 					<%=log %>님 &nbsp; <img alt="" src="../img/top1.jpg"> &nbsp;
 					<a style="text-decoration:none">주문확인</a>&nbsp;
