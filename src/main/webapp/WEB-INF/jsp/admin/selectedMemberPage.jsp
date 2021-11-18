@@ -3,9 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/jsp/admin/admin_top.jsp"/>
-<%String memberNo = request.getParameter("memberNo"); %>
-
+<%String memberId = request.getParameter("memberId"); %>
 <h1>회원정보페이지</h1>
+<form action = "checkAdmin" method = "POST">
 <table>
 	<tr>
 		<td>${member_info.getMemberName()}</td>
@@ -31,4 +31,13 @@
 	<tr>
 		<td>${member_info.getMemberBirthDate()}</td>
 	</tr>
+	<tr>
+		<td>${member_info.getMemberCheck()}</td>
+	</tr>
+	<tr>
+		<td><button type="submit" name="button" value="checkbutton">관리자권한변경</button></td>
+	</tr>
 </table>
+<input type="hidden" name="memberId" value=<%=memberId%>>
+<input type="hidden" name="memberCheck" value="check">
+</form>

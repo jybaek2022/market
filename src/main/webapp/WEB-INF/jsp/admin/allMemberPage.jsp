@@ -25,7 +25,3 @@
 			</td>
 	</c:forEach>
 </table>
-
-<c:forEach var="member" items="${member_list}" varStatus="status">
-   		<p>${status.count} : <c:out value="${member.getMemberName()}" /></p>
-</c:forEach>

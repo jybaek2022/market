@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import gu.market.repository.model.Product;
 import gu.market.error.MarketException;
-import gu.market.repository.model.Member;
-import gu.market.repository.model.Cart;
+import gu.market.repository.model.*;
 import gu.market.service.MarketService;
 import gu.market.session.SessionManager;
 
@@ -97,8 +95,7 @@ public class MarketController {
 		String phone = request.getParameter("phone");
 		String address1 = request.getParameter("address1");
 		String address2 = request.getParameter("address2");
-		String gender = request.getParameter("gender");
-		
+		String gender = request.getParameter("gender");		
 		String birthdate = request.getParameter("birthDate");
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate birthDate = LocalDate.parse(birthdate, format);
@@ -202,9 +199,15 @@ public class MarketController {
 		String memberId = (String)session.getAttribute("id");
 		int productNo = Integer.parseInt(request.getParameter("productNo"));
 		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
-		int productPrice = Integer.parseInt(request.getParameter("productPrice"));
 		
-		marketSvc.purchase(memberId, productNo, salesCount, productPrice);
+		//장바구니에서 넘어온경우 장바구니에서 삭제
+		if(request.getParameter("cartNo") != null) {
+			int cartNo = Integer.parseInt(request.getParameter("cartNo"));
+			System.out.println(cartNo);
+			marketSvc.deleteFcart(cartNo);
+		}
+		marketSvc.minusCount(productNo, salesCount);
+		marketSvc.purchase(memberId, productNo, salesCount);
 		return "market/purchaseF";
 	}
 	//장바구니보기
@@ -232,60 +235,12 @@ public class MarketController {
 	}
 	//장바구니추가
 	@RequestMapping(value = "/addCart", method = {RequestMethod.GET, RequestMethod.POST})
-	public String addCart(HttpServletRequest request) throws Exception {
-		String memberId = request.getParameter("memberId");
+	public String addCart(HttpServletRequest request, HttpSession session) throws Exception {
+		String memberId = (String)session.getAttribute("id");
 		int productNo = Integer.parseInt(request.getParameter("productNo"));
-		String productName = request.getParameter("productName");
 		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
-		int productPrice = Integer.parseInt(request.getParameter("productPrice"));
 		
-		marketSvc.addCart(memberId, productNo, productName, salesCount, productPrice);
+		marketSvc.addCart(memberId, productNo, salesCount);
 		return "forward:/market/allCart";
-	}
-	
-	//admin contoller로 이동시켜야할것들
-	//관리자메인페이지
-//	@RequestMapping(value="/adminMain") 
-//	public String adminMain() {
-//		return "admin/admin_home";
-//	} 
-	
-	//상품등록get
-	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
-	public String getAddProduct(HttpSession session) throws Exception {
-		return "market/addProductPage";
-	}
-	//상품등록post
-	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-	public String postAddProduct(HttpServletRequest request) throws MarketException {
-		String pName = request.getParameter("pName");
-		int pCCode = Integer.parseInt(request.getParameter("pCCode"));
-		String pDetail = request.getParameter("pDetail");
-		int pPrice = Integer.parseInt(request.getParameter("pPrice"));
-		int pStock = Integer.parseInt(request.getParameter("pStock"));
-		String pStatus = request.getParameter("pStatus");
-		String pImgSrc = request.getParameter("pImgSrc");
-
-		marketSvc.addProduct(pName, pCCode, pDetail, pPrice, pStock, pStatus, pImgSrc);
-		return "redirect:/market/adminMain";
-	}
-	//전체품목
-	@RequestMapping(value = "/allMember")
-	public String allMember(ModelMap modelMap) throws Exception {
-		List<?> memberview = marketSvc.allMember();
-
-		modelMap.addAttribute("memberview", memberview);
-		return "admin/allMemberPage";
-	}
-
-	@RequestMapping(value = "/selectedMember")
-	public ModelAndView selectedMember(HttpServletRequest request) throws Exception {
-		String memberId = request.getParameter("memberId");
-		Member memberInfo = marketSvc.selectMemberOne(memberId);
-
-		ModelAndView mv = new ModelAndView("admin/selectedMemberPage");
-		mv.addObject("member_info", memberInfo);
-
-		return mv;
 	}
 }

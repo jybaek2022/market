@@ -43,10 +43,7 @@ String memberId = (String) id;%>
 		<td><button type = "submit" name = "button" value = "addCart">장바구니담기</button></td>
 	</tr>
 </table>
-	<input type = "hidden" name = "memberId" value=<%=memberId%>>
-	<input type = "hidden" name = "productNo" value="${product_info.getProductNo()}">
-	<input type = "hidden" name = "productName" value="${product_info.getProductName()}">
-	<input type = "hidden" name = "productPrice" value="${product_info.getProductPrice()}">	
+	<input type = "hidden" name = "productNo" value="${product_info.getProductNo()}">	
 </form>
 
 <br>상품리뷰보여주기

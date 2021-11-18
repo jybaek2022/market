@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="board">
+    <select id="selectBoard1List" resultType="gu.market.repository.model.Board" >
+        SELECT BRDNO, BRDTITLE, BRDWRITER, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
+          FROM TBL_BOARD
+         ORDER BY BRDNO DESC 
+    </select> 
+    
+    <insert id="insertBoard1" parameterType="gu.market.repository.model.Board" >
+    	INSERT INTO TBL_BOARD(BRDTITLE, BRDWRITER, BRDMEMO, BRDDATE)
+		VALUES (#{BRDTITLE}, #{BRDWRITER}, #{BRDMEMO}, NOW() )
+	</insert>
+	
+    <update id="updateBoard1" parameterType="gu.market.repository.model.Board">
+        UPDATE TBL_BOARD
+           SET BRDTITLE=#{BRDTITLE}
+             , BRDWRITER=#{BRDWRITER}
+             , BRDMEMO=#{BRDMEMO}
+         WHERE BRDNO=#{BRDNO}
+    </update> 
+		
+    <select id="selectBoard1One" parameterType="String" resultType="gu.market.repository.model.Board">
+        SELECT BRDNO, BRDTITLE, BRDWRITER, BRDMEMO, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
+          FROM TBL_BOARD
+         WHERE BRDNO=#{BRDNO}
+    </select> 
+
+    <delete id="deleteBoard1One" parameterType="String">
+        DELETE 
+          FROM TBL_BOARD
+         WHERE BRDNO=#{BRDNO}
+    </delete> 
+
+</mapper>

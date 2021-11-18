@@ -81,14 +81,25 @@ public class MarketService {
 	}
 	
 	//구매
-	public void purchase(String memberId, int productNo, int salesCount, int productPrice) throws MarketException {
+	public void minusCount(int productNo, int salesCount) throws MarketException {
+		Sales sales = new Sales();
+		sales.setProductNo(productNo);
+		sales.setSalesCount(salesCount);
+		//재고부족할때 오류페이지로 나가게되는 과정
+		
+		sqlSession2.update("minusCount", sales);
+		
+	}
+	public void purchase(String memberId, int productNo, int salesCount) throws MarketException {
 		Sales sales = new Sales();
 		sales.setMemberId(memberId);
 		sales.setProductNo(productNo);
 		sales.setSalesCount(salesCount);
-		sales.setProductPrice(productPrice);
 		
 		sqlSession2.insert("purchase", sales);
+	}
+	public void deleteFcart(int cartNo) {
+		sqlSession2.delete("deleteFcart", cartNo);
 	}
 	
 	// 장바구니보기
@@ -97,13 +108,11 @@ public class MarketService {
 		return sqlSession2.selectList("allCart", id);
 	}
 	//장바구니추가
-	public void addCart(String memberId, int productNo, String productName, int salesCount, int productPrice) throws MarketException {
+	public void addCart(String memberId, int productNo, int salesCount) throws MarketException {
 		Cart cart = new Cart();
 		cart.setMemberId(memberId);
 		cart.setProductNo(productNo);
-		cart.setProductName(productName);
 		cart.setSalesCount(salesCount);
-		cart.setProductPrice(productPrice);
 		
 		sqlSession2.insert("addCart", cart);
 	}
@@ -127,12 +136,7 @@ public class MarketService {
 			throw new MarketException(ErrorCode.DuplicatedAccountErrCode, e);
 		}
 	}
-	// 전체회원
-	public List<?> allMember() throws Exception {
-		return sqlSession2.selectList("allMember");
+	public List<?> productSales() {
+		return sqlSession2.selectList("productSales");
 	}
-	//멤버선택
-		public Member selectMemberOne(String memberId) throws Exception {
-			return sqlSession2.selectOne("selectMemberOne", memberId);
-		}
 }

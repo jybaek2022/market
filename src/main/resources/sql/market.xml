@@ -36,10 +36,20 @@
         VALUES (#{memberId}, #{memberPw}, #{memberName}, #{memberPhone}, #{memberAddress1}, #{memberAddress2}, #{memberGender}, #{memberBirthDate})
     </insert>
     
+    <update id="minusCount" parameterType="gu.market.repository.model.Product">
+        UPDATE product
+        SET productStock = productStock-#{salesCount}
+        WHERE productNo=#{productNo}
+    </update>
     <insert id="purchase" parameterType="gu.market.repository.model.Sales">
-        INSERT INTO sales (memberId, productNo, salesCount, productPrice)
-        VALUES (#{memberId}, #{productNo}, #{salesCount}, #{productPrice})
+        INSERT INTO sales (memberId, productNo, salesCount)
+        VALUES (#{memberId}, #{productNo}, #{salesCount})
     </insert>
+    <delete id = "deleteFcart" parameterType="gu.market.repository.model.Cart">
+   	 	DELETE 
+   	 	FROM cart
+		WHERE cartNo = #{cartNo}
+    </delete>
 
     <insert id="addProduct" parameterType="gu.market.repository.model.Product">
         INSERT INTO product (productName, productCatCode, productDetail, productPrice, productStock, productStatus, productImgSrc)
@@ -47,14 +57,15 @@
     </insert>
 
    	<select id="allCart" resultType="gu.market.repository.model.Cart">
-       SELECT productName, salesCount, productPrice 
-       FROM cart
+       SELECT p.productName, c.salesCount, p.productPrice, c.cartNo
+       FROM cart c
+       INNER JOIN product p ON c.productNo = p.productNo
        WHERE memberId=#{id}
     </select>
    
     <insert id="addCart" parameterType="gu.market.repository.model.Cart">
-        INSERT INTO cart (memberId, productNo, productName, salesCount, productPrice)
-        VALUES (#{memberId}, #{productNo}, #{productName}, #{salesCount}, #{productPrice})
+        INSERT INTO cart (memberId, productNo, salesCount)
+        VALUES (#{memberId}, #{productNo}, #{salesCount})
     </insert>
    	<select id="allMember" resultType="gu.market.repository.model.Member">
         SELECT memberId, memberName, memberPhone, memberAddress1, memberAddress2, memberJoinDate, memberBirthDate, memberGender, memberCheck
@@ -64,5 +75,33 @@
         SELECT memberId, memberName, memberPhone, memberAddress1, memberAddress2, memberJoinDate, memberBirthDate, memberGender, memberCheck
         FROM member
         WHERE memberId=#{memberId} 
-    </select> 
+    </select>
+    <update id="deleteAdmin" parameterType="gu.market.repository.model.Member">
+        UPDATE member
+        SET memberCheck = null
+        WHERE memberId=#{memberId}
+    </update>
+    <update id="addAdmin" parameterType="gu.market.repository.model.Member">
+        UPDATE member
+        SET memberCheck = 'Y'
+        WHERE memberId=#{memberId}
+    </update> 
+    
+    <update id="modifyMember" parameterType="gu.market.repository.model.Member">
+        UPDATE member
+        SET memberName = #{memberName}, memberGender = #{memberGender}, memberBirthDate = #{memberBirthDate} 
+        WHERE memberId=#{memberId}
+    </update> 
+    <select id="purchaseList" resultType="map">
+        SELECT s.salesNo, s.productNo, s.salesCount, p.productPrice, s.salesDate, p.productName
+        FROM sales s
+        INNER JOIN product p ON s.productNo = p.productNo
+        WHERE memberId=#{memberId}
+    </select>
+    <select id="productSales" resultType="map">
+        SELECT s.productNo, s.salesCount, SUM(s.salesCount*p.productPrice) AS sum, p.productName 
+        FROM sales s
+        INNER JOIN product p ON s.productNo = p.productNo
+        GROUP BY p.productNo
+    </select>
 </mapper>
