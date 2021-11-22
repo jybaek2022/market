@@ -1,6 +1,7 @@
 package gu.market.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +63,11 @@ public class MyPageController {
 		String memberId = (String) session.getAttribute("id");
 		List<?> purchaseview = actSvc.purchaseList(memberId);
 
+//		@SuppressWarnings("unchecked")
+//		HashMap<String, Object> map = (HashMap<String, Object>)(purchaseview.get(4));
+//		String productName = (String)map.get("productName");
+//		productName = productName + "aaa";
+		
 		modelMap.addAttribute("purchaseview", purchaseview);
 		return "mypage/purchaseList";
 	}
