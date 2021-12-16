@@ -6,7 +6,7 @@
 <h1>상품추가</h1>
 	<hr width="700" color="black" size="3"/>
 	<br>
-	<form method="post" action="addProduct" enctype="multipart/form-data">
+	<form method="post" action="postAddProduct" enctype="multipart/form-data">
 		<table>
 			<tr height="50">
 				<td width="150"><b>품목명</b></td>
@@ -34,11 +34,8 @@
 			</tr>
 			<tr height="50">
 				<td width="150"><b>이미지</b></td>
-				<td width="300" align="center"><input type="text" name="pImgSrc" placeholder="이미지 주소" style="width:300px; height:40px"></td>
+				<td><input type="file" name ="file" value="업로드"></td>
 			</tr>
-		</table>
-	
-		<table>
 			<tr height="50">
 				<td colspan="2" align="center"><br>
 					<button type="submit">상품추가</button>

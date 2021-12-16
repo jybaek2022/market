@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-로그인이 아닙니다.
-에러 : ${error_info.toString()}
+<h1>에러발생</h1><br>
+에러내용 : ${error_info.toString()}
 </body>
 </html>

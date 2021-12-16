@@ -3,12 +3,20 @@
 
 <mapper namespace="market">
 	<select id="allProduct" resultType="gu.market.repository.model.Product">
-        SELECT productNo, productCatCode, productName, productDetail, productPrice
+        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus
           FROM product
+          WHERE productStatus=''
     </select> 
 
+	<select id="searchProduct" parameterType="String" resultType="gu.market.repository.model.Product">
+        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus
+          FROM product
+         WHERE productName
+          Like "%"#{productName}"%"
+    </select> 
+    
     <select id="selectProductOne" parameterType="String" resultType="gu.market.repository.model.Product">
-        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock
+        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus
           FROM product
          WHERE productNo=#{productNo} 
     </select> 
@@ -57,7 +65,7 @@
     </insert>
 
    	<select id="allCart" resultType="gu.market.repository.model.Cart">
-       SELECT p.productName, c.salesCount, p.productPrice, c.cartNo
+       SELECT p.productNo, p.productName, c.salesCount, p.productPrice, c.cartNo
        FROM cart c
        INNER JOIN product p ON c.productNo = p.productNo
        WHERE memberId=#{id}
@@ -91,7 +99,21 @@
         UPDATE member
         SET memberName = #{memberName}, memberGender = #{memberGender}, memberBirthDate = #{memberBirthDate} 
         WHERE memberId=#{memberId}
-    </update> 
+    </update>
+    <select id="adminProduct" resultType="gu.market.repository.model.Product">
+        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus
+          FROM product
+    </select> 
+    <update id="modifyProduct" parameterType="gu.market.repository.model.Product">
+        UPDATE product
+        SET productCatCode = #{productCatCode}, productName = #{productName}, productDetail = #{productDetail}, productPrice = #{productPrice}, productStock = #{productStock}, productStatus = #{productStatus} 
+        WHERE productNo=#{productNo}
+    </update>
+    <update id="deleteProduct" parameterType="gu.market.repository.model.Product">
+        UPDATE product
+           SET productStatus = #{productStatus} 
+         WHERE productNo=#{productNo}
+    </update>
     <select id="purchaseList" resultType="map">
         SELECT s.salesNo, s.productNo, s.salesCount, p.productPrice, s.salesDate, p.productName
         FROM sales s
@@ -103,5 +125,11 @@
         FROM sales s
         INNER JOIN product p ON s.productNo = p.productNo
         GROUP BY p.productNo
+    </select>
+    <select id="memberSales" resultType="map">
+        SELECT s.memberId, s.productNo, s.salesCount, SUM(s.salesCount*p.productPrice) AS sum, p.productName 
+        FROM sales s
+        INNER JOIN product p ON s.productNo = p.productNo
+        GROUP BY s.memberId
     </select>
 </mapper>

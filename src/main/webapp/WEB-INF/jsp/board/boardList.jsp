@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 
+<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>board1</title>
+<title>게시판</title>
 </head>
 <body>
-	<a href="board1Form">글쓰기</a>
+<div align = "center">
 					
 	<table border="1" style="width:600px">
 		<caption>게시판</caption>
@@ -28,7 +30,7 @@
 		</thead>
 		<tbody>
 			<c:forEach var="listview" items="${listview}" varStatus="status">	
-				<c:url var="link" value="board1Read">
+				<c:url var="link" value="boardRead">
 					<c:param name="brdno" value="${listview.brdno}" />
 				</c:url>		
 										  				
@@ -40,6 +42,8 @@
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>    
+	</table>
+	<a href="boardForm">글쓰기</a>
+</div>    
 </body>
 </html>

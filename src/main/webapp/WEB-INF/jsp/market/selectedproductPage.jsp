@@ -1,10 +1,10 @@
 <%@page import="javax.websocket.SendResult"%>
+<%@page import="org.springframework.web.servlet.ModelAndView"%>
+
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/jsp/market/top.jsp"/>   
-<%Object id = session.getAttribute("id");
-String memberId = (String) id;%>
 
 <form action = "connectionFNC" method = "POST">
 <table>
@@ -46,4 +46,4 @@ String memberId = (String) id;%>
 	<input type = "hidden" name = "productNo" value="${product_info.getProductNo()}">	
 </form>
 
-<br>상품리뷰보여주기
+<jsp:include page="/WEB-INF/jsp/review/reviewList.jsp"/>

@@ -4,14 +4,14 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/jsp/admin/admin_top.jsp"/>
 <div align = "center">
-<h1>회원 매출 통계 - 성별</h1>
+<h1>회원 매출 통계</h1>
 <table>
 <tr>
-<td align="center">성별<td align="center">판매량<td align="center">매출
+<td align="center">ID<td align="center">구매수량<td align="center">매출
 </tr>	
 	<c:forEach var="pSview" items="${pSview}" varStatus="status">
-	<tr>	
-		<td align="center"><c:out value="${pSview.productName}"/></td>
+	<tr>
+		<td align="center"><c:out value="${pSview.memberId}"/></td>	
 		<td align="center"><c:out value="${pSview.salesCount}"/></td>
 		<td align="right"><c:out value="${pSview.sum}"/></td>
 	</tr>

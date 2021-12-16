@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+
 <jsp:include page="/WEB-INF/jsp/market/top.jsp"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +10,8 @@
 <title>board1</title>
 </head>
 <body>
+<div align = "center">
+	<form name="form1" action="reviewUpdateSave">
 		<table border="1" style="width:600px">
 			<caption>게시판</caption>
 			<colgroup>
@@ -17,20 +21,21 @@
 			<tbody>
 				<tr>
 					<td>작성자</td> 
-					<td><c:out value="${boardInfo.brdwriter}"/></td> 
+					<td><input type="text" name="rvwriter" size="20" maxlength="20" value="<c:out value="${boardInfo.brdwriter}"/>"></td> 
 				</tr>
 				<tr>
 					<td>제목</td> 
-					<td><c:out value="${boardInfo.brdtitle}"/></td> 
+					<td><input type="text" name="rvtitle" size="70" maxlength="250" value="<c:out value="${boardInfo.brdtitle}"/>"></td> 
 				</tr>
 				<tr>
 					<td>내용</td> 
-					<td><c:out value="${boardInfo.brdmemo}"/></td> 
+					<td><textarea name="rvmemo" rows="5" cols="60"><c:out value="${boardInfo.brdmemo}"/></textarea></td> 
 				</tr>
 			</tbody>
 		</table>    
-		<a href="#" onclick="history.back(-1)">돌아가기</a>
-		<a href="board1Delete?brdno=<c:out value="${boardInfo.brdno}"/>">삭제</a>
-		<a href="board1Update?brdno=<c:out value="${boardInfo.brdno}"/>">수정</a>
+		<input type="hidden" name="rvno" value="<c:out value="${boardInfo.brdno}"/>"> 
+		<a href="#" onclick="form1.submit()">저장</a>
+	</form>	
+	</div>
 </body>
 </html>

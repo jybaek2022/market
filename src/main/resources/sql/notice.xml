@@ -1,38 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
-<mapper namespace="board">
-    <select id="selectBoardList" resultType="gu.market.repository.model.Board" >
-        SELECT BRDNO, BRDTITLE, BRDWRITER, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
-          FROM BOARD
-         ORDER BY BRDNO DESC 
-    </select> 
-    
-    <insert id="insertBoard" parameterType="gu.market.repository.model.Board" >
-    	INSERT INTO BOARD(BRDTITLE, BRDWRITER, BRDMEMO, BRDDATE)
-		VALUES (#{brdtitle}, #{brdwriter}, #{brdmemo}, NOW() )
-	</insert>
-	
-    <update id="updateBoard" parameterType="gu.market.repository.model.Board">
-        UPDATE BOARD
-           SET BRDTITLE=#{brdtitle}
-             , BRDWRITER=#{brdwriter}
-             , BRDMEMO=#{brdmemo}
-         WHERE BRDNO=#{brdno}
-    </update> 
-		
-    <select id="selectBoardOne" parameterType="String" resultType="gu.market.repository.model.Board">
-        SELECT BRDNO, BRDTITLE, BRDWRITER, BRDMEMO, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
-          FROM BOARD
-         WHERE BRDNO=#{brdno}
-    </select> 
-
-    <delete id="deleteBoardOne" parameterType="String">
-        DELETE 
-          FROM BOARD
-         WHERE BRDNO=#{brdno}
-    </delete> 
-    <!-- 
+<mapper namespace="notice">    
     <select id="selectNoticeList" resultType="gu.market.repository.model.Board" >
         SELECT BRDNO, BRDTITLE, BRDWRITER, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
           FROM NOTICE
@@ -62,6 +31,6 @@
         DELETE 
           FROM NOTICE
          WHERE BRDNO=#{brdno}
-    </delete>
-     --> 
+    </delete> 
+
 </mapper>

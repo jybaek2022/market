@@ -3,7 +3,7 @@
 
 	<%
 		String adminPath = "http://localhost:8080/admin";
-		String myPath = "http://localhost:8080/mypage/myinfo";
+		String myPath = "http://localhost:8080/mypage";
 		String marketPath = "http://localhost:8080/market";
 		String boardPath = "http://localhost:8080/board";
 	
@@ -21,6 +21,7 @@
 		}
 		
 	%>
+	
 	<div align="right">
 		<font size="2">
 				<%if(log != "") {%>
@@ -29,20 +30,26 @@
 					<button type="button" onClick="location.href='<%=adminPath%>/adminMain'">관리자화면가기</button>	
 					<%}%>
 					<%=log %>님 &nbsp; <img alt="" src="../img/top1.jpg"> &nbsp;
-					<a style="text-decoration:none">주문확인</a>&nbsp;
+					<a href="<%=myPath%>/purchaseList" style="text-decoration:none">주문확인</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="<%=marketPath%>/logout" style="text-decoration:none">로그아웃</a>&nbsp;
+					<a href="<%=myPath%>/logout" style="text-decoration:none">로그아웃</a>&nbsp;
 				<%} else{%>
-					<a href="join" style="text-decoration:none">회원가입</a>&nbsp;
+					<a href="<%=myPath%>/join" style="text-decoration:none">회원가입</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="<%=marketPath%>/login" style="text-decoration:none">로그인</a>&nbsp;
+					<a href="<%=myPath%>/login" style="text-decoration:none">로그인</a>&nbsp;
 				<%} %>
 					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="<%=myPath%>" style="text-decoration:none">마이페이지</a>&nbsp;
+					<a href="<%=myPath%>/myinfo" style="text-decoration:none">마이페이지</a>&nbsp;
 		</font>
 	</div>
+	<div align="right">
+	<form action = "search">
+		<input type ="text" name = "productName" value = "품목명">
+		<button type ="submit" value = "search">검색</button>
+	</form>
+	</div>
 	<div align="center">
-		<a href="home">
+		<a href="<%=marketPath%>/home">
 			<img src="../img/logo.png" alt="" height="80">
 		</a>
 	</div>
@@ -76,7 +83,7 @@
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a  style="text-decoration:none"><b>이벤트</b></a>
+						<a href="http://localhost:8080/notice/noticeList" style="text-decoration:none"><b>공지사항</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">
@@ -84,7 +91,7 @@
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none" href = "<%=boardPath%>/board1List"><b>커뮤니티</b></a>
+						<a style="text-decoration:none" href = "<%=boardPath%>/boardList"><b>커뮤니티</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">
@@ -92,8 +99,11 @@
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a href = "<%=marketPath%>/allCart"><img src="../img/cart.png" width="30">장바구니</a>
+						<a style="text-decoration:none" href = "<%=marketPath%>/allCart" ><img src="../img/cart.png" width="30"><b>장바구니</b></a>
 					</font>
+				</td>
+				<td width="10" align="center">
+					<img alt="" src="../img/top1.jpg">
 				</td>	
 			</tr>
 		</table>

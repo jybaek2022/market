@@ -7,7 +7,7 @@
 <hr size = "1" color="black" width="max"><br>
 
 <h1>주문 조회</h1>
-
+<div align = center>
 <table>
 	<tr>
 		<td width="180" align="center">품목명</td>
@@ -28,3 +28,4 @@
 		</tr>
 	</c:forEach>
 </table>
+</div>

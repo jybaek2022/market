@@ -38,5 +38,3 @@
 </form>
 </div>
 비밀번호변경은 암호화? 적용해서
-<br>
-<button onclick ="location.href='purchaseList'">구매내역보기</button>

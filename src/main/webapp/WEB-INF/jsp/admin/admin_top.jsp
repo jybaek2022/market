@@ -23,16 +23,12 @@ String marketPath = "http://localhost:8080/market";
 					<button type="button" onClick="location.href='<%=marketPath%>/home'">일반회원화면가기</button>	
 					<%}%>
 					<%=log %>님 &nbsp; <img alt="" src="../img/top1.jpg"> &nbsp;
-					<a style="text-decoration:none">주문확인</a>&nbsp;
-					<img alt="" src="../img/top1.jpg"> &nbsp;
 					<a href="<%=marketPath%>/logout" style="text-decoration:none">로그아웃</a>&nbsp;
 				<%} else{%>
 					<a href="join" style="text-decoration:none">회원가입</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
 					<a href="<%=marketPath%>/login" style="text-decoration:none">로그인</a>&nbsp;
 				<%} %>
-					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a style="text-decoration:none">고객센터</a>&nbsp;
 		</font>
 	</div>
 	<div align="center">
@@ -54,7 +50,12 @@ String marketPath = "http://localhost:8080/market";
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none" href ="<%=adminPath%>/addProduct"><b>상품추가</b></a>
+						<a style="text-decoration:none" href ="<%=adminPath%>/getAddProduct"><b>상품추가</b></a>
+					</font>
+				</td>
+				<td width="180" align="center">
+					<font size="3" color="black">
+						<a style="text-decoration:none" href ="<%=adminPath%>/adminProduct"><b>상품수정</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">
@@ -62,7 +63,7 @@ String marketPath = "http://localhost:8080/market";
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none" href ="<%=adminPath%>/productSales"><b>운영현황</b></a>
+						<a style="text-decoration:none" href ="<%=adminPath%>/productSales"><b>품목별매출</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">
@@ -70,7 +71,15 @@ String marketPath = "http://localhost:8080/market";
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a style="text-decoration:none" href = "board6List"><b>클레임관리</b></a>
+						<a style="text-decoration:none" href ="<%=adminPath%>/memberSales"><b>회원별매출</b></a>
+					</font>
+				</td>
+				<td width="10" align="center">
+					<img alt="" src="../img/top1.jpg"> &nbsp;
+				</td>
+				<td width="180" align="center">
+					<font size="3" color="black">
+						<a style="text-decoration:none" href = "<%=adminPath%>/claimList"><b>클레임관리</b></a>
 					</font>
 				</td>
 			</tr>

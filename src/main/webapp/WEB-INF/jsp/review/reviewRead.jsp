@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +8,14 @@
 <title>board1</title>
 </head>
 <body>
+<%
+if(request.getParameter("productNo")==null){%>
+	<jsp:include page="/WEB-INF/jsp/admin/admin_top.jsp"/>
+<%
+}else{%>
+	<jsp:include page="/WEB-INF/jsp/market/top.jsp"/>
+<%}%>
+<div align = "center">
 		<table border="1" style="width:600px">
 			<caption>게시판</caption>
 			<colgroup>
@@ -17,20 +25,25 @@
 			<tbody>
 				<tr>
 					<td>작성자</td> 
-					<td><c:out value="${boardInfo.brdwriter}"/></td> 
+					<td><c:out value="${reviewInfo.rvwriter}"/></td> 
 				</tr>
 				<tr>
 					<td>제목</td> 
-					<td><c:out value="${boardInfo.brdtitle}"/></td> 
+					<td><c:out value="${reviewInfo.rvtitle}"/></td> 
 				</tr>
 				<tr>
 					<td>내용</td> 
-					<td><c:out value="${boardInfo.brdmemo}"/></td> 
+					<td><c:out value="${reviewInfo.rvmemo}"/></td> 
 				</tr>
 			</tbody>
 		</table>    
 		<a href="#" onclick="history.back(-1)">돌아가기</a>
-		<a href="board1Delete?brdno=<c:out value="${boardInfo.brdno}"/>">삭제</a>
-		<a href="board1Update?brdno=<c:out value="${boardInfo.brdno}"/>">수정</a>
+		<%
+		boolean checkId = (boolean)request.getAttribute("checkId");
+		if(checkId == true){ %>
+		<a href="reviewDelete?rvno=<c:out value="${reviewInfo.rvno}"/>">삭제</a>
+		<a href="reviewUpdate?rvno=<c:out value="${reviewInfo.rvno}"/>">수정</a>
+		<%} %>
+</div>
 </body>
 </html>

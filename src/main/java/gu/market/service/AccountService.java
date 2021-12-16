@@ -8,8 +8,11 @@ import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import gu.market.error.ErrorCode;
+import gu.market.error.MarketException;
 import gu.market.repository.model.Member;
 
 @Service
@@ -18,22 +21,47 @@ public class AccountService {
 	@Resource(name = "sqlSessionTemplate2")
 	private SqlSessionTemplate sqlSession2;
 
-	// 전체회원
-	public List<?> allMember() {
-		return sqlSession2.selectList("allMember");
-	}
-	//멤버선택
-	public Member selectMemberOne(String memberId) throws Exception {
-		return sqlSession2.selectOne("selectMemberOne", memberId);
+	//로그인
+	public String[] memberlogin(String id, String pw) throws MarketException {
+		Member member = new Member();
+		member.setMemberId(id);
+		member.setMemberPw(pw);
+		
+		Member loginedMember = sqlSession2.selectOne("login", member);
+		if (loginedMember == null) {
+			throw new MarketException(ErrorCode.InvaliddateUserErrCode);
+		}else {//이부분 배열 -> list로 변환필요
+			String[] value = new String[3];
+			value[0] = loginedMember.getMemberName();
+			value[1] = loginedMember.getMemberCheck();
+			value[2] = loginedMember.getMemberId();
+			return value;
+		}
 	}
 	
-	// 관리자권한제거
-	public void deleteAdmin(String memberId) throws Exception {
-		sqlSession2.update("deleteAdmin", memberId);
+	// 회원가입
+	public void join(String id, String pw, String name, String phone, 
+			String address1, String address2, String gender, LocalDate birthDate)
+					throws MarketException {
+		Member member = new Member();
+		member.setMemberId(id);
+		member.setMemberPw(pw);
+		member.setMemberName(name);
+		member.setMemberPhone(phone);
+		member.setMemberAddress1(address1);
+		member.setMemberAddress2(address2);
+		member.setMemberGender(gender);
+		member.setMemberBirthDate(birthDate);
+		
+		try {
+			sqlSession2.insert("joinMember", member);
+		} catch (DuplicateKeyException e) {
+			throw new MarketException(ErrorCode.DuplicatedAccountErrCode, e);
+		}
 	}
-	// 관리자권한추가
-	public void addAdmin(String memberId) throws Exception {
-		sqlSession2.update("addAdmin", memberId);
+	//멤버선택
+	public Member myInfo(String memberId) throws Exception {
+		return sqlSession2.selectOne("selectMemberOne", memberId);
 	}
 	// 정보수정
 	public void modifiedMemberInfo(String memberId, String memberName, String memberPhone, String memberGender, String memberAddress1, String memberAddress2, LocalDate memberBirthDate, LocalDate memberJoinDate) throws Exception {
