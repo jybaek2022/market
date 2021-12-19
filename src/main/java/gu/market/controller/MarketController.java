@@ -74,7 +74,7 @@ public class MarketController {
 		ModelAndView mv = new ModelAndView("market/selectedproductPage");
 		mv.addObject("product_info", productInfo);
 		request.setAttribute("productNo", productNo);
-//		리뷰같은페이지에 불러오기위해
+//		리뷰같은페이지에 불러오기위해 -->스프링의 기본틀에서 벗어남
 //		Controller를 일반 class처럼 써보려고 했는데 오류발생 (원인 : reviewSvc is null)
 //		ReviewController rvc = new ReviewController();
 //		rvc.reviewList(modelMap, productInfo.getProductNo());
