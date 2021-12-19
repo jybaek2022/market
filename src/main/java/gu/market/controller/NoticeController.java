@@ -43,7 +43,7 @@ public class NoticeController {
     		return "error/unloginedError";
     	}
     }
-    //글저장
+    //글 저장
     @RequestMapping(value = "/noticeSave")
    	public String noticeSave(@ModelAttribute Board boardInfo) throws Exception {
     
