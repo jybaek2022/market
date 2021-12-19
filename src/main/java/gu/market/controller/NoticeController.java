@@ -24,7 +24,7 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeSvc;
     
-    // 공지사항리스트
+    // 공지사항 리스트
     @RequestMapping(value = "/noticeList")
    	public String noticeList(ModelMap modelMap) throws Exception {
     	List<?> listview = noticeSvc.selectNoticeList();
