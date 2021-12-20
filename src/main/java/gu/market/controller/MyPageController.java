@@ -44,6 +44,7 @@ public class MyPageController {
 		// 로그인 상태가 아닐 경우
 		String id = request.getParameter("id");
 		String pwd = request.getParameter("pw");
+		String encryPW = Sha256.encrypt(pwd);
 		String name = request.getParameter("name");
 		String phone = request.getParameter("phone");
 		String address1 = request.getParameter("address1");
@@ -53,7 +54,7 @@ public class MyPageController {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate birthDate = LocalDate.parse(birthdate, format);
 
-		actSvc.join(id, pwd, name, phone, address1, address2, gender, birthDate);
+		actSvc.join(id, encryPW, name, phone, address1, address2, gender, birthDate);
 		//sessionManager.login(request.getSession(), name);
 		return "redirect:/market/home";
 	}
@@ -77,8 +78,8 @@ public class MyPageController {
 		// 로그인 상태가 아닐 경우
 		String id = request.getParameter("id");
 		String pwd = request.getParameter("pw");
-
-		String[] value = actSvc.memberlogin(id, pwd);
+		String encryPW = Sha256.encrypt(pwd); // 암호화된 비밀번호
+		String[] value = actSvc.memberlogin(id, encryPW);
 		sessionManager.login(request.getSession(), value);
 		return "redirect:/market/home";
 	}
