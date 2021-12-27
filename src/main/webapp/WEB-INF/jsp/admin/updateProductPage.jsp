@@ -34,5 +34,5 @@
 </table>
 	<input type = "hidden" name = "productNo" value="${product_info.getProductNo()}">	
 </form>
-<button onclick = "location.href='http://localhost:8080/admin/deleteProduct?productNo=${product_info.getProductNo()}&productStatus=N'">상품진열삭제</button>
+<button onclick = "location.href='https://localhost:8443/admin/deleteProduct?productNo=${product_info.getProductNo()}&productStatus=N'">상품진열삭제</button>
 </div>

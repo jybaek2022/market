@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import gu.market.service.BoardService;
 import gu.market.session.SessionManager;
+import gu.market.dto.Page;
 import gu.market.repository.model.Board;
 
 @Controller
@@ -24,14 +26,33 @@ public class BoardController {
     @Autowired
     private BoardService boardSvc;
     
-    // 커뮤니티리스트
+//    // 커뮤니티리스트
+//    @RequestMapping(value = "/boardList")
+//   	public String boardList(ModelMap modelMap) throws Exception {
+//    	List<?> listview = boardSvc.selectBoardList();
+//        
+//    	modelMap.addAttribute("listview", listview);
+//        return "board/boardList";
+//    }
+  // 페이징 커뮤니티 리스트
     @RequestMapping(value = "/boardList")
-   	public String boardList(ModelMap modelMap) throws Exception {
-    	List<?> listview = boardSvc.selectBoardList();
-        
-    	modelMap.addAttribute("listview", listview);
-        return "board/boardList";
+ 	public String boardList(ModelMap modelMap,
+ 			@RequestParam(value="nowPage", required=false, defaultValue="1")int nowPage,
+ 			@RequestParam(value="cntPerPage", required=false, defaultValue="10")int cntPerPage) throws Exception {
+    	//Page vo = new Page(10, 1, 4);//하드코딩 수정
+    	
+    	int total = boardSvc.countBoardList();
+    	System.out.println(total);
+		Page vo = new Page(total, nowPage, cntPerPage);//하드코딩 수정    	
+		
+		System.out.println(vo.getTotal());
+		
+		List<Board> listview = boardSvc.selectBoardList(vo);
+  		modelMap.addAttribute("listview", listview);
+  		modelMap.addAttribute("paging", vo);
+  		return "board/boardList";
     }
+    
     
     // 커뮤니티글쓰기 
     @RequestMapping(value = "/boardForm")

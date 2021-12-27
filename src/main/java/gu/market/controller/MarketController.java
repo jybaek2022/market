@@ -120,6 +120,7 @@ public class MarketController {
 	@RequestMapping(value = "/connectionFNC", method = RequestMethod.POST)
 	public String connectionFNC(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String btn = request.getParameter("button");
+		System.out.println(btn);
 		if (btn.equals("purchase"))
 			return "forward:/market/purchase";
 		else
@@ -133,15 +134,15 @@ public class MarketController {
 			return "error/unloginedError";
 		}
 		
-		int cartNo = Integer.parseInt(request.getParameter("cartNo"));
 		int productNo = Integer.parseInt(request.getParameter("productNo"));
 		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
 		
 		marketSvc.minusCount(productNo, salesCount);
 		marketSvc.purchase(memberId, productNo, salesCount);
 		//장바구니에서 넘어온경우 장바구니에서 삭제
+		
 		if(request.getParameter("cartNo") != null) {
-			cartNo = Integer.parseInt(request.getParameter("cartNo"));
+			int cartNo = Integer.parseInt(request.getParameter("cartNo"));
 			marketSvc.deleteFcart(cartNo);
 		}
 		

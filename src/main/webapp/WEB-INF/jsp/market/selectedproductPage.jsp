@@ -39,7 +39,7 @@
 		<td>수      량 : <input type = "number" name = "salesCount" value ="구매수량"><td>
 	</tr>
 	<tr>
-		<td><button type = "submit" name = "button" value = "purchase">구매하기</button></td>
+		<td><button type = "submit" name = "button" value = "purchase">바로구매하기</button></td>
 		<td><button type = "submit" name = "button" value = "addCart">장바구니담기</button></td>
 	</tr>
 </table>

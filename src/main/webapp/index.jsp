@@ -3,6 +3,6 @@
 <html>
 <body>
 <h2>쇼핑몰</h2>
-<%response.sendRedirect("/market/home"); %>
+<%response.sendRedirect("https://localhost:8443/market/home"); %>
 </body>
 </html>

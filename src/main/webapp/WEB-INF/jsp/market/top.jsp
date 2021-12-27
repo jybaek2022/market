@@ -2,10 +2,10 @@
     pageEncoding="UTF-8"%>
 
 	<%
-		String adminPath = "http://localhost:8080/admin";
-		String myPath = "http://localhost:8080/mypage";
-		String marketPath = "http://localhost:8080/market";
-		String boardPath = "http://localhost:8080/board";
+		String adminPath = "https://localhost:8443/admin";
+		String myPath = "https://localhost:8443/mypage";
+		String marketPath = "https://localhost:8443/market";
+		String boardPath = "https://localhost:8443/board";
 	
 		request.setCharacterEncoding("UTF-8");				
 	
@@ -83,7 +83,7 @@
 				</td>
 				<td width="180" align="center">
 					<font size="3" color="black">
-						<a href="http://localhost:8080/notice/noticeList" style="text-decoration:none"><b>공지사항</b></a>
+						<a href="https://localhost:8443/notice/noticeList" style="text-decoration:none"><b>공지사항</b></a>
 					</font>
 				</td>
 				<td width="10" align="center">

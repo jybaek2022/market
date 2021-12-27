@@ -12,9 +12,9 @@ String adminCheck ="";
 if(admin !=null){
 	adminCheck = admin;
 }
-String adminPath = "http://localhost:8080/admin";
-String myPath = "http://localhost:8080/mypage/myinfo";
-String marketPath = "http://localhost:8080/market";
+String adminPath = "https://localhost:8443/admin";
+String myPath = "https://localhost:8443/mypage/myinfo";
+String marketPath = "https://localhost:8443/market";
 %>
 	<div align="right">
 		<font size="2">

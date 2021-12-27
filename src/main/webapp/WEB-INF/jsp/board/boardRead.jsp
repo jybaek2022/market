@@ -30,7 +30,7 @@
 			</tbody>
 		</table>    
 		<a href="#" onclick="history.back(-1)">돌아가기</a>
-		<a href="board1Delete?brdno=<c:out value="${boardInfo.brdno}"/>">삭제</a>
-		<a href="board1Update?brdno=<c:out value="${boardInfo.brdno}"/>">수정</a>
+		<a href="boardDelete?brdno=<c:out value="${boardInfo.brdno}"/>">삭제</a>
+		<a href="boardUpdate?brdno=<c:out value="${boardInfo.brdno}"/>">수정</a>
 </body>
 </html>

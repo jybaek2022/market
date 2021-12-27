@@ -2,7 +2,15 @@ package gu.market.repository.model;
 
 public class Board {
 
-    private String brdno, brdtitle, brdwriter, brdmemo, brddate;
+    private String brdno, brdtitle, brdwriter, brdmemo, brddate, brdrn;
+
+	public String getBrdrn() {
+		return brdrn;
+	}
+
+	public void setBrdrn(String brdrn) {
+		this.brdrn = brdrn;
+	}
 
 	public String getBrdno() {
 		return brdno;

@@ -33,7 +33,7 @@ if(request.getParameter("productNo")!=null){
 		</thead>
 		<tbody>
 			<c:forEach var="listview" items="${listview}" varStatus="status">	
-				<c:url var="link" value="http://localhost:8080/review/reviewRead">
+				<c:url var="link" value="https://localhost:8443/review/reviewRead">
 					<c:param name="rvno" value="${listview.rvno}" />
 				</c:url>		
 				<tr>
@@ -45,7 +45,7 @@ if(request.getParameter("productNo")!=null){
 		</tbody>
 	</table>
 <%if(productNo != 0){ %>
-	<a href="http://localhost:8080/review/reviewForm?productNo=<%=productNo%>">리뷰쓰기</a>
+	<a href="https://localhost:8443/review/reviewForm?productNo=<%=productNo%>">리뷰쓰기</a>
 <%}else{
 	request.setAttribute("productNo", 0);
 }

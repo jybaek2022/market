@@ -2,12 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <mapper namespace="board">
+<!-- 
     <select id="selectBoardList" resultType="gu.market.repository.model.Board" >
         SELECT BRDNO, BRDTITLE, BRDWRITER, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
           FROM BOARD
          ORDER BY BRDNO DESC 
     </select> 
-    
+ -->    
     <insert id="insertBoard" parameterType="gu.market.repository.model.Board" >
     	INSERT INTO BOARD(BRDTITLE, BRDWRITER, BRDMEMO, BRDDATE)
 		VALUES (#{brdtitle}, #{brdwriter}, #{brdmemo}, NOW() )
@@ -32,36 +33,21 @@
           FROM BOARD
          WHERE BRDNO=#{brdno}
     </delete> 
-    <!-- 
-    <select id="selectNoticeList" resultType="gu.market.repository.model.Board" >
-        SELECT BRDNO, BRDTITLE, BRDWRITER, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
-          FROM NOTICE
-         ORDER BY BRDNO DESC 
-    </select> 
-    
-    <insert id="insertNotice" parameterType="gu.market.repository.model.Board" >
-    	INSERT INTO NOTICE(BRDTITLE, BRDWRITER, BRDMEMO, BRDDATE)
-		VALUES (#{brdtitle}, #{brdwriter}, #{brdmemo}, NOW() )
-	</insert>
-	
-    <update id="updateNotice" parameterType="gu.market.repository.model.Board">
-        UPDATE NOTICE
-           SET BRDTITLE=#{brdtitle}
-             , BRDWRITER=#{brdwriter}
-             , BRDMEMO=#{brdmemo}
-         WHERE BRDNO=#{brdno}
-    </update> 
-		
-    <select id="selectNoticeOne" parameterType="String" resultType="gu.market.repository.model.Board">
-        SELECT BRDNO, BRDTITLE, BRDWRITER, BRDMEMO, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
-          FROM NOTICE
-         WHERE BRDNO=#{brdno}
-    </select> 
+    <!-- 총 게시글 갯수 출력 -->
+	<select id="countBoard" resultType="int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
 
-    <delete id="deleteNoticeOne" parameterType="String">
-        DELETE 
-          FROM NOTICE
-         WHERE BRDNO=#{brdno}
-    </delete>
-     --> 
+	<!-- 페이징 처리 후 게시글 조회 -->
+	<select id="selectBoardList" parameterType="HashMap" resultType="gu.market.repository.model.Board">
+		SELECT BRDNO, BRDTITLE, BRDWRITER, BRDMEMO, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE, SUB.RN AS BRDRN
+		FROM (
+			SELECT *, ROW_NUMBER() OVER (ORDER BY BRDNO) AS RN
+			FROM BOARD
+			ORDER BY BRDNO DESC
+			) SUB
+		WHERE SUB.RN BETWEEN #{start} AND #{end}
+
+	</select>
+
 </mapper>
