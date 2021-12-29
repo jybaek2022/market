@@ -1,6 +1,10 @@
 package gu.market.error;
 
 public enum ErrorCode {
+	// HTTP Response
+	// HTTP Response > Status Code : 400
+	// HTTP Response > Body : {"errCode": 1, "errMessage": "duplicate account error"}
+	
 	DuplicatedAccountErrCode(1, "duplicate account error"),
 	InvaliddateUserErrCode(2, "invalid user"),
 	UnloginedStatus(3, "unlogined"),

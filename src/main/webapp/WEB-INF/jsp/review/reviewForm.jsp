@@ -11,6 +11,7 @@
 <body>
 <%String id = (String)session.getAttribute("id");%>
 <%int productNo = Integer.parseInt(request.getParameter("productNo"));%>
+<%String name = (String)session.getAttribute("name"); %>
 <div align = "center">
 	<form name="form1" action="reviewSave">
 		<table border="1" style="width:600px">
@@ -22,7 +23,7 @@
 			<tbody>
 				<tr>
 					<td>작성자</td> 
-					<td><%=id%><input type="hidden" name="rvwriter" value ="<%=id%>"></td>
+					<td><%=name%><input type="hidden" name="rvwriter" value ="<%=id%>"></td>
 				</tr>
 				<tr>
 					<td>구분</td>

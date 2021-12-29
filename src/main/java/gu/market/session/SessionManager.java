@@ -2,21 +2,15 @@ package gu.market.session;
 
 import javax.servlet.http.HttpSession;
 
+import gu.market.repository.model.Member;
+
 public class SessionManager {
 	private final String IS_LOGIN = "isLogin";
 	private final String NAME = "name";
 	private final String ADMIN = "admin";
 	private final String ID = "id";
 	
-	// code
-	// 0x0111 IS_LOGIN
-	// 0x0112 NAMEL
-	//
-	// variable
-	// 변수 = 값 
-	// 변수명 
-	// 0x0001 "isLogin"
-	// 0x0002 "name"
+	private final String ACCESS_TOKEN = "accessToken";
 	
     public boolean isLogin(HttpSession session) {
     	Object isLogin = session.getAttribute(IS_LOGIN);
@@ -26,11 +20,15 @@ public class SessionManager {
     	return false;
     }
     
-    public void login(HttpSession session, String[] value) {
+    public void login(HttpSession session, Member member) {
     	session.setAttribute(IS_LOGIN, true);
-    	session.setAttribute(NAME, value[0]);
-    	session.setAttribute(ADMIN, value[1]);
-    	session.setAttribute(ID, value[2]);
+    	session.setAttribute(NAME, member.getMemberName());
+    	session.setAttribute(ADMIN, member.getMemberCheck());
+    	session.setAttribute(ID, member.getMemberId());
+    }
+    
+    public void setAccessToken(HttpSession session, String accessToken) {
+    	session.setAttribute(ACCESS_TOKEN, accessToken);
     }
     
     public String getName(HttpSession session) {
@@ -41,5 +39,8 @@ public class SessionManager {
     }
     public String getId(HttpSession session) {
     	return (String) session.getAttribute(ID);
+    }
+    public String getAccessToken(HttpSession session) {
+    	return (String) session.getAttribute(ACCESS_TOKEN);
     }
 }

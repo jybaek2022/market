@@ -10,6 +10,7 @@
 </head>
 <body>
 <%String id = (String)session.getAttribute("id"); %>
+<%String name = (String)session.getAttribute("name"); %>
 <div align = "center">
 	<form name="form1" action="boardSave">
 		<table border="1" style="width:600px">
@@ -21,7 +22,7 @@
 			<tbody>
 				<tr>
 					<td>작성자</td> 
-					<td><%=id%><input type="hidden" name="brdwriter" value ="<%=id%>"></td>
+					<td><%=name%><input type="hidden" name="brdwriter" value ="<%=id%>"></td>
 				</tr>
 				<tr>
 					<td>제목</td> 

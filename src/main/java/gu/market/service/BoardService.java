@@ -27,6 +27,7 @@ public class BoardService {
     public void insertBoard(Board param) throws Exception {
 		sqlSession2.insert("insertBoard", param);
     }
+    
     public void updateBoard(Board param) throws Exception {
 		sqlSession2.insert("updateBoard", param);
     }

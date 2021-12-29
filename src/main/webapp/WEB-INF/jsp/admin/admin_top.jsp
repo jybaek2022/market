@@ -13,7 +13,7 @@ if(admin !=null){
 	adminCheck = admin;
 }
 String adminPath = "https://localhost:8443/admin";
-String myPath = "https://localhost:8443/mypage/myinfo";
+String myPath = "https://localhost:8443/mypage";
 String marketPath = "https://localhost:8443/market";
 %>
 	<div align="right">
@@ -23,11 +23,11 @@ String marketPath = "https://localhost:8443/market";
 					<button type="button" onClick="location.href='<%=marketPath%>/home'">일반회원화면가기</button>	
 					<%}%>
 					<%=log %>님 &nbsp; <img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="<%=marketPath%>/logout" style="text-decoration:none">로그아웃</a>&nbsp;
+					<a href="<%=myPath%>/logout" style="text-decoration:none">로그아웃</a>&nbsp;
 				<%} else{%>
 					<a href="join" style="text-decoration:none">회원가입</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="<%=marketPath%>/login" style="text-decoration:none">로그인</a>&nbsp;
+					<a href="<%=myPath%>/login" style="text-decoration:none">로그인</a>&nbsp;
 				<%} %>
 		</font>
 	</div>

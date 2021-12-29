@@ -10,6 +10,7 @@
 <title>게시판</title>
 </head>
 <body>
+<%String id = (String)session.getAttribute("id"); %>
 <div align = "center">
 					
 	<table border="1" style="width:600px">
@@ -60,7 +61,9 @@
 			</c:if>
 		</tbody>
 	</table>
+	<%if(id!=null){ %>
 	<a href="boardForm">글쓰기</a>
+	<%}%>
 </div>    
 </body>
 </html>

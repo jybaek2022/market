@@ -10,6 +10,7 @@
 <title>board1</title>
 </head>
 <body>
+<%String adminCheck = (String)session.getAttribute("admin"); %>
 <div align = "center">
 					
 	<table border="1" style="width:600px">
@@ -43,7 +44,10 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	<%if(adminCheck !=null && adminCheck.equals("Y")){ %>
 	<a href="noticeForm">글쓰기</a>
+	<%}%>
+
 </div>    
 </body>
 </html>

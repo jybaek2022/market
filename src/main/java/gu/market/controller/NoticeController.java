@@ -35,11 +35,10 @@ public class NoticeController {
     
     // 공지사항 쓰기 
     @RequestMapping(value = "/noticeForm")
-   	public String noticeForm(HttpServletRequest request) throws Exception {
-    	if (sessionManager.isLogin(request.getSession())) {
+   	public String noticeForm(HttpServletRequest request, HttpSession session) throws Exception {
+    	if (sessionManager.isLogin(request.getSession())&&session.getAttribute("admin").equals("Y")) {
     		return "notice/noticeForm";
-    	}else
-    	{
+    	}else{
     		return "error/unloginedError";
     	}
     }

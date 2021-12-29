@@ -42,19 +42,20 @@ public class MyPageController {
 			return "redirect:/market/home";
 
 		// 로그인 상태가 아닐 경우
-		String id = request.getParameter("id");
+		Member member = new Member();
+		member.setMemberId(request.getParameter("id"));
 		String pwd = request.getParameter("pw");
-		String encryPW = Sha256.encrypt(pwd);
-		String name = request.getParameter("name");
-		String phone = request.getParameter("phone");
-		String address1 = request.getParameter("address1");
-		String address2 = request.getParameter("address2");
-		String gender = request.getParameter("gender");		
+		member.setMemberPw(Sha256.encrypt(pwd));
+		member.setMemberName(request.getParameter("name"));
+		member.setMemberPhone(request.getParameter("phone"));
+		member.setMemberAddress1(request.getParameter("address1"));
+		member.setMemberAddress2(request.getParameter("address2"));
+		member.setMemberGender(request.getParameter("gender"));		
 		String birthdate = request.getParameter("birthDate");
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate birthDate = LocalDate.parse(birthdate, format);
+		member.setMemberBirthDate(LocalDate.parse(birthdate, format));
 
-		actSvc.join(id, encryPW, name, phone, address1, address2, gender, birthDate);
+		actSvc.join(member);
 		//sessionManager.login(request.getSession(), name);
 		return "redirect:/market/home";
 	}
@@ -79,8 +80,8 @@ public class MyPageController {
 		String id = request.getParameter("id");
 		String pwd = request.getParameter("pw");
 		String encryPW = Sha256.encrypt(pwd); // 암호화된 비밀번호
-		String[] value = actSvc.memberlogin(id, encryPW);
-		sessionManager.login(request.getSession(), value);
+		Member member = actSvc.memberlogin(id, encryPW);
+		sessionManager.login(request.getSession(), member);
 		return "redirect:/market/home";
 	}
 
@@ -96,8 +97,12 @@ public class MyPageController {
 	
 	//내정보보기
 	@RequestMapping(value = "/myinfo")
-	public ModelAndView selectedMember(HttpSession session) throws Exception {
+	public ModelAndView selectedMember(HttpSession session, HttpServletRequest request) throws Exception {
 		String memberId = (String) session.getAttribute("id");
+		if(memberId == null) {
+			ModelAndView mv = new ModelAndView("null");
+			return mv;
+		}	
 		Member myInfo = actSvc.myInfo(memberId);
 
 		ModelAndView mv = new ModelAndView("mypage/myinfo");
@@ -107,34 +112,30 @@ public class MyPageController {
 	}
 	//정보수정 ->>>>>한꺼번에 받을수있을것같은데?
 	@RequestMapping(value = "/modifiedMemberInfo")
-	public String modifiedMemberInfo(HttpServletRequest request, HttpSession session, Member member) throws MarketException {
-		String memberId = (String)session.getAttribute("id");
-		String memberName = request.getParameter("name");
-		String memberPhone = request.getParameter("phone");
-		String memberGender = request.getParameter("gender");
-		String memberAddress1 = request.getParameter("address1");
-		String memberAddress2 = request.getParameter("address2");
-		LocalDate memberBirthDate = LocalDate.parse(request.getParameter("birth"));
-		LocalDate memberJoinDate = LocalDate.parse(request.getParameter("joindate"));
-		try {
-			actSvc.modifiedMemberInfo(memberId, memberName, memberPhone, memberGender, memberAddress1, memberAddress2, memberBirthDate, memberJoinDate);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public String modifiedMemberInfo(HttpServletRequest request, HttpSession session, Member member) {
+		member = new Member();
+		member.setMemberId((String)session.getAttribute("id"));
+		member.setMemberName(request.getParameter("name"));
+		member.setMemberPhone(request.getParameter("phone"));
+		member.setMemberGender(request.getParameter("gender"));
+		member.setMemberAddress1(request.getParameter("address1"));
+		member.setMemberAddress2(request.getParameter("address2"));
+		member.setMemberBirthDate(LocalDate.parse(request.getParameter("birth")));
+		member.setMemberJoinDate(LocalDate.parse(request.getParameter("joindate")));
+
+		boolean isSuccess = actSvc.modifiedMemberInfo(member);
+		if(isSuccess) {
+			return "market/home";
+		} else {
+			return "market/error";
 		}
 		
-		return "market/home";
 	}
 	//구매내역
 	@RequestMapping(value = "/purchaseList")
 	public String purchaseList(ModelMap modelMap, HttpSession session) throws Exception {
 		String memberId = (String) session.getAttribute("id");
 		List<?> purchaseview = actSvc.purchaseList(memberId);
-
-//		@SuppressWarnings("unchecked")
-//		HashMap<String, Object> map = (HashMap<String, Object>)(purchaseview.get(4));
-//		String productName = (String)map.get("productName");
-//		productName = productName + "aaa";
 		
 		modelMap.addAttribute("purchaseview", purchaseview);
 		return "mypage/purchaseList";

@@ -2,11 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <mapper namespace="market">
-	<select id="allProduct" resultType="gu.market.repository.model.Product">
-        SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus
-          FROM product
-          WHERE productStatus=''
-    </select> 
+   	<select id="allProduct" parameterType="HashMap" resultType="gu.market.repository.model.Product">
+		SELECT *, SUB.RN AS PRDRN
+		FROM (
+			SELECT *, ROW_NUMBER() OVER (ORDER BY PRODUCTNO) AS RN
+			FROM PRODUCT
+			ORDER BY PRODUCTNO DESC
+			) SUB
+		WHERE PRODUCTSTATUS='' AND(SUB.RN BETWEEN #{start} AND #{end})
+	</select>
+	
+	<select id="countProduct" resultType="int">
+		SELECT COUNT(*) FROM PRODUCT
+	</select>
 
 	<select id="searchProduct" parameterType="String" resultType="gu.market.repository.model.Product">
         SELECT productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus
@@ -38,7 +46,11 @@
           FROM member
          WHERE memberId=#{memberId} and memberPw=#{memberPw}
     </select>
-
+	<select id="idCheck" parameterType="String" resultType="gu.market.repository.model.Member">
+        SELECT *
+          FROM member
+         WHERE memberId=#{memberId}
+    </select>
     <insert id="joinMember" parameterType="gu.market.repository.model.Member" >
         INSERT INTO member (memberId, memberPw, memberName, memberPhone, memberAddress1, memberAddress2, memberGender, memberBirthDate)
         VALUES (#{memberId}, #{memberPw}, #{memberName}, #{memberPhone}, #{memberAddress1}, #{memberAddress2}, #{memberGender}, #{memberBirthDate})

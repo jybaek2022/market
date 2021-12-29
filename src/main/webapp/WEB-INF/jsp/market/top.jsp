@@ -27,19 +27,20 @@
 				<%if(log != "") {%>
 					<%--관리자 로그인시 버튼추가--%>
 					<%if(adminCheck.equals("Y")){%>
-					<button type="button" onClick="location.href='<%=adminPath%>/adminMain'">관리자화면가기</button>	
+						<button type="button" onClick="location.href='<%=adminPath%>/adminMain'">관리자화면가기</button>	
 					<%}%>
 					<%=log %>님 &nbsp; <img alt="" src="../img/top1.jpg"> &nbsp;
 					<a href="<%=myPath%>/purchaseList" style="text-decoration:none">주문확인</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
 					<a href="<%=myPath%>/logout" style="text-decoration:none">로그아웃</a>&nbsp;
+					<img alt="" src="../img/top1.jpg"> &nbsp;
+					<a href="<%=myPath%>/myinfo" style="text-decoration:none">마이페이지</a>&nbsp;
 				<%} else{%>
 					<a href="<%=myPath%>/join" style="text-decoration:none">회원가입</a>&nbsp;
 					<img alt="" src="../img/top1.jpg"> &nbsp;
 					<a href="<%=myPath%>/login" style="text-decoration:none">로그인</a>&nbsp;
 				<%} %>
-					<img alt="" src="../img/top1.jpg"> &nbsp;
-					<a href="<%=myPath%>/myinfo" style="text-decoration:none">마이페이지</a>&nbsp;
+					
 		</font>
 	</div>
 	<div align="right">
