@@ -34,3 +34,9 @@
   * product : 제품
   * sales : 거래내역
   * board : 게시판
+  
+### 실행방법
+1. redis 실행 `docker run -p 6379:6379 redis`
+2. market 실행 `java -jar ..`
+3. market 접속 `https://localhost:8443/index.jsp` 
+  * FYI. `(http://localhost:8080/index.jsp (redirect)`

@@ -3,13 +3,10 @@
 
 <mapper namespace="market">
    	<select id="allProduct" parameterType="HashMap" resultType="gu.market.repository.model.Product">
-		SELECT *, SUB.RN AS PRDRN
-		FROM (
-			SELECT *, ROW_NUMBER() OVER (ORDER BY PRODUCTNO) AS RN
-			FROM PRODUCT
-			ORDER BY PRODUCTNO DESC
-			) SUB
-		WHERE PRODUCTSTATUS='' AND(SUB.RN BETWEEN #{start} AND #{end})
+		SELECT *
+		FROM PRODUCT
+		WHERE PRODUCTSTATUS=''
+		LIMIT #{startNo}, #{cntPerPage}
 	</select>
 	
 	<select id="countProduct" resultType="int">

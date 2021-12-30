@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Service;
 
 import gu.market.config.MarketConfig;
@@ -35,6 +36,9 @@ public class MarketService {
 	@Autowired
 	@Resource(name = "sqlSessionTemplate2")
 	private SqlSessionTemplate sqlSession2;
+	
+	@Autowired
+	private RedisService redisService;
 
 	private String createNaverAPIURL(String code, String state) throws Exception {
 		String redirectURI = URLEncoder.encode(MarketConfig.authNaverCallbackURL, "UTF-8");
@@ -146,10 +150,10 @@ public class MarketService {
 		return member;
 	}
 	
-	// 전체상품
-	public List<?> allProduct() throws Exception {
-		return sqlSession2.selectList("allProduct");
-	}
+//	// 전체상품
+//	public List<?> allProduct() throws Exception {
+//		return sqlSession2.selectList("allProduct");
+//	}
 
 	// 상품검색
 	public List<?> searchProduct(String productName) throws Exception {
@@ -220,12 +224,31 @@ public class MarketService {
 	public int countProductList() {
     	return sqlSession2.selectOne("countProduct");
     }
-    public List<Product> selectProductList(Page vo) {
-    	int start = vo.getStart();
-    	int end = vo.getEnd();
+    public List<Product> allProduct(int startNo, int cntPerPage) {
+    	List<Product> list = null;
+    	
+    	// 캐시확인
+    	try {
+	    	list = redisService.getProductInfomation(startNo, cntPerPage);
+			if(list != null) {
+				return list;
+			}
+    	} catch (RedisConnectionFailureException e) {
+    		System.out.println("fail to read product list from redis" + e.getMessage());
+    	}
+    	
+    	// db 접근
     	Map<String, Integer> input = new HashMap<String, Integer>();
-    	input.put("start", start);
-    	input.put("end", end);
-    	return sqlSession2.selectList("allProduct", input);
+    	input.put("startNo", startNo);
+    	input.put("cntPerPage", cntPerPage);
+    	list = sqlSession2.selectList("allProduct", input);
+    	
+    	// 캐시 저장
+    	try {
+    		redisService.setProductInfomation(startNo, cntPerPage, list);
+    	} catch (RedisConnectionFailureException e) {
+    		System.out.println("fail to set product list to redis" + e.getMessage());
+    	}
+    	return list;
     }
 }

@@ -83,6 +83,18 @@
 			<tx:method name="*" rollback-for="Exception"/>
 		</tx:attributes>
 	</tx:advice>
-	    
-	    
+	<!-- REDIS -->
+	<bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+        p:use-pool="true"
+        p:host-name="localhost"
+        p:port="6379"
+    />	    
+    <!-- object for redis -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+		p:connectionFactory-ref="jedisConnFactory"
+	>
+		<property name="defaultSerializer" ref="stringSerializer" />
+	</bean>    
+	
+	<bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 </beans>

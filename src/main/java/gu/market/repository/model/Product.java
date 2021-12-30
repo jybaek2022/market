@@ -1,5 +1,15 @@
 package gu.market.repository.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Product {
 	private int productNo;
 	private int productCatCode;
@@ -86,5 +96,43 @@ public class Product {
 	}
 	public void setProductImgSrc(String productImgSrc) {
 		this.productImgSrc = productImgSrc;
+	}
+
+	public static List<Product> jsonToProductList(String jsonString){
+		System.out.println("뽑기에서 json출력 : "+ jsonString);
+		List<Product> list = new ArrayList<Product>();
+		
+		JSONArray jArray = new JSONArray(jsonString);
+		for (int i = 0; i < jArray.length(); i++)//배열
+		{
+			JSONObject obj = (JSONObject) jArray.get(i);
+			Product product = new Product();
+			product.setProductNo(obj.getInt("productNo"));
+			product.setProductName(obj.getString("productName"));
+			product.setProductPrice(obj.getInt("productPrice"));
+			product.setProductDetail(obj.getString("productDetail"));
+			
+			list.add(product);
+		}		
+		System.out.println("list출력 : "+ list.toString());
+		return list;
+	}
+	
+	public static String arrayToJson(List<Product> list) {
+		
+		JSONArray jArray = new JSONArray();//배열이 필요할때
+		for (int i = 0; i < list.size(); i++)//배열
+		{
+			JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
+			sObject.put("productNo", list.get(i).getProductNo());
+			sObject.put("productName", list.get(i).getProductName());
+			sObject.put("productPrice", list.get(i).getProductPrice());
+			sObject.put("productDetail", list.get(i).getProductDetail());
+			jArray.put(sObject);
+		}
+
+		System.out.println("넣기에서 json출력 : "+ jArray.toString());
+	
+		return jArray.toString();
 	}
 }

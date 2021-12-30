@@ -8,35 +8,31 @@
 
 <h1>전체 상품</h1>
 
-<table>	
+<table>
 	<c:forEach var="productview" items="${productview}" varStatus="status">	
 		<c:url var="link" value="selectedProduct">
 			<c:param name="productNo" value="${productview.productNo}" /> <!-- value값의 변수명 vo에서 그대로 가져와야함 -->
 		</c:url>							  				
-			<td><a href="${link}">
-			<img height = "500" width ="300" src = "../img/${productview.productNo}.jpg">
-			<c:out value="${productview.productCatCode}"/>
-			<br><c:out value="${productview.productName}"/>
-			<br><c:out value="${productview.productDetail}"/>
-			<br><c:out value="${productview.productPrice}"/>
-			</a>
+			<td>
+				<a href="${link}">
+				<img height = "500" width ="300" src = "../img/${productview.productNo}.jpg">
+				<c:out value="${productview.productCatCode}"/>
+				<br><c:out value="${productview.productName}"/>
+				<br><c:out value="${productview.productDetail}"/>
+				<br><c:out value="${productview.productPrice}"/>
+				</a>
 			</td>
 	</c:forEach>
 	
-	<c:if test="${paging.startPage!=1}">
-				<a href="https://localhost:8443/market/allProduct?nowPage=${paging.startPage-1}&cntPerPage=${paging.cntPerPage}">&lt;</a>
-			</c:if>
-			<c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
-				<c:choose>
-					<c:when test="${p==paging.nowPage}">
-						<b>${p}</b>
-					</c:when>
-					<c:when test="${p!=paging.nowPage}">
-					<a href="https://localhost:8443/market/allProduct?nowPage=${p}&cntPerPage=${paging.cntPerPage}">${p}</a>
-					</c:when>
-				</c:choose>
-			</c:forEach>
-			<c:if test="${paging.endPage!=paging.lastPage}">
-				<a href="https://localhost:8443/product/allProduct?nowPage=${paging.endPage+1}&cntPerPage=${paging.cntPerPage}">&gt;</a>
-			</c:if>
+	<c:forEach begin="1" end="${paging.totalPage}" var="p">
+		<c:choose>
+			<c:when test="${p==paging.pageNo}">
+				<b>${p}</b>
+			</c:when>
+			<c:when test="${p!=paging.pageNo}">
+				<a href="https://localhost:8443/market/allProduct?pageNo=${p}">${p}</a>
+			</c:when>
+		</c:choose>
+	</c:forEach>
+	
 </table>

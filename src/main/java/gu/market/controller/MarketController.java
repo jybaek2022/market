@@ -1,6 +1,8 @@
 package gu.market.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -91,29 +93,27 @@ public class MarketController {
 		return "market/allProductPage";
 	}
 
-	// 전체상품 db에서 받아오는 방법
-//	@RequestMapping(value = "/allProduct")
-//	public String allProductList(ModelMap modelMap) throws Exception {
-//		List<?> productview = marketSvc.allProduct();
-//
-//		modelMap.addAttribute("productview", productview);
-//		return "market/allProductPage";
-//	}
-
 	@RequestMapping(value = "/allProduct")
-	public String allProductList(ModelMap modelMap,
-			@RequestParam(value = "nowPage", required = false, defaultValue = "1") int nowPage,
-			@RequestParam(value = "cntPerPage", required = false, defaultValue = "10") int cntPerPage)
+	public String allProductList(ModelMap modelMap, HttpServletRequest request)
 			throws Exception {
 
 		int total = marketSvc.countProductList();
-		Page vo = new Page(total, nowPage, cntPerPage);
-
-		System.out.println(vo.getTotal());
-
-		List<Product> productview = marketSvc.selectProductList(vo);
+		int cntPerPage = 10;
+		int totalPage = (total/cntPerPage) + 1;
+		
+		int pageNo = 1; 		
+		if(request.getParameter("pageNo") != null) {
+			pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		}
+		int startNo = ((pageNo-1)*10); // 페이지 시작 품목번호
+		
+		List<Product> productview = marketSvc.allProduct(startNo, cntPerPage);
 		modelMap.addAttribute("productview", productview);
-		modelMap.addAttribute("paging", vo);
+		
+		Map<String, Integer> paging = new HashMap<String, Integer>();
+    	paging.put("pageNo", pageNo);
+    	paging.put("totalPage", totalPage);
+    	modelMap.addAttribute("paging", paging);
 		return "market/allProductPage";
 	}
 	// 한품목 선택했을때 읽기
@@ -125,11 +125,7 @@ public class MarketController {
 		ModelAndView mv = new ModelAndView("market/selectedproductPage");
 		mv.addObject("product_info", productInfo);
 		request.setAttribute("productNo", productNo);
-//		리뷰같은페이지에 불러오기위해 -->스프링의 기본틀에서 벗어남
-//		Controller를 일반 class처럼 써보려고 했는데 오류발생 (원인 : reviewSvc is null)
-//		ReviewController rvc = new ReviewController();
-//		rvc.reviewList(modelMap, productInfo.getProductNo());
-		//컨트롤러간 대신 하나에 합쳐서 씀
+
 		List<?> listview = reviewSvc.selectReviewList(productInfo.getProductNo());
 		modelMap.addAttribute("listview", listview);
 		

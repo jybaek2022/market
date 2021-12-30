@@ -26,15 +26,6 @@ public class BoardController {
 	@Autowired
 	private BoardService boardSvc;
 
-//    // 커뮤니티리스트
-//    @RequestMapping(value = "/boardList")
-//   	public String boardList(ModelMap modelMap) throws Exception {
-//    	List<?> listview = boardSvc.selectBoardList();
-//        
-//    	modelMap.addAttribute("listview", listview);
-//        return "board/boardList";
-//    }
-
 	/**
 	 * 커뮤니티 목록
 	 * 
@@ -52,8 +43,6 @@ public class BoardController {
 
 		int total = boardSvc.countBoardList();
 		Page vo = new Page(total, nowPage, cntPerPage);
-
-		System.out.println(vo.getTotal());
 
 		List<Board> listview = boardSvc.selectBoardList(vo);
 		modelMap.addAttribute("listview", listview);
