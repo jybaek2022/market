@@ -55,10 +55,10 @@
     apiURL += "&state=" + state;
     session.setAttribute("state", state);
  %>
-  <a href="<%=apiURL%>"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
+  <a href="<%=apiURL%>"><img height="50" width ="300" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
 </td>
 </tr>
-	<tr height = "50">
+	<tr height = "100">
 		<td width="300">
 			<button onclick="location.href='join'" 
 			style="height:50px; width:300px; cursor:pointer">회원가입</button>		

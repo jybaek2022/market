@@ -14,13 +14,14 @@ public class Member {
 	private LocalDate memberBirthDate;
 	private String memberGender;
 	private String memberCheck;
+	private String memberEmail;
 	
 	
 	public Member() {}
 	public Member(int memberNo, String memberId, 
 			String memberPw, String memberName, String memberPhone, 
 			String memberAddress1, String memberAddress2, LocalDate memberJoinDate, 
-			LocalDate memberBirthDate, String memberGender, String memberCheck) {
+			LocalDate memberBirthDate, String memberGender, String memberCheck, String memberEmail) {
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.memberPw = memberPw;
@@ -32,6 +33,7 @@ public class Member {
 		this.memberBirthDate = memberBirthDate;
 		this.memberGender = memberGender;
 		this.memberCheck = memberCheck;
+		this.memberEmail =  memberEmail;
 	}
 
 	public int getMemberNo() {
@@ -114,4 +116,11 @@ public class Member {
 	public void setMemberCheck(String memberCheck) {
 		this.memberCheck = memberCheck;
 	}
+	public String getMemberEmail() {
+		return memberEmail;
+	}
+	public void setMemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
+	}
+	
 }

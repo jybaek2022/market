@@ -24,7 +24,7 @@ public class RedisService {
 		ValueOperations<String, Object> setOP = (ValueOperations<String, Object>) redisTemplate.opsForValue();
 		String key = getProductionInformationKey(start, cnt);
 		String json = Product.arrayToJson(productList);
-		setOP.set(key, json, 30, TimeUnit.SECONDS);
+		setOP.set(key, json, 60, TimeUnit.SECONDS);
 	}
 
 	// redis에 품목 정보 가져오기

@@ -1,12 +1,15 @@
 package gu.market.service;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Response;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.json.JSONObject;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -24,11 +29,15 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Service;
 
 import gu.market.config.MarketConfig;
-import gu.market.dto.Page;
+import gu.market.dto.MissingPetResponse;
 import gu.market.error.ErrorCode;
 import gu.market.error.MarketException;
 import gu.market.repository.model.*;
-import gu.market.session.SessionManager;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 @Service
 public class MarketService {
@@ -40,6 +49,68 @@ public class MarketService {
 	@Autowired
 	private RedisService redisService;
 
+	public MissingPetResponse parseXml(String xml) throws Exception{
+		InputStream in = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+		
+		DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
+		Document doc = dBuilder.parse(in);
+
+		// root tag 
+		doc.getDocumentElement().normalize();
+		System.out.println("Root element: " + doc.getDocumentElement().getNodeName()); // Root element: result
+		
+		NodeList nList = doc.getElementsByTagName("item");
+		System.out.println("길이 : "+nList.getLength());
+		
+		List<MissingPet> list = new ArrayList<>();
+		
+		for(int temp = 0; temp < nList.getLength(); temp++){		
+			Node nNode = nList.item(temp);
+			if(nNode.getNodeType() == Node.ELEMENT_NODE){
+				MissingPet mp = new MissingPet();				
+				Element eElement = (Element) nNode;
+				mp.setCareNm(getTagValue("careNm", eElement));
+				mp.setCareAddr(getTagValue("careAddr", eElement));
+				mp.setKindCd(getTagValue("kindCd", eElement));
+				mp.setSexCd(getTagValue("sexCd", eElement));
+				mp.setPopfile(getTagValue("popfile", eElement));
+				
+				list.add(mp);
+			}	
+		}
+		nList = doc.getElementsByTagName("body");
+		Node nNode=nList.item(0);			
+		Element eElement = (Element) nNode;
+		
+		int totalPage = 0;
+		int pageNo = 1;
+		if(list.size() > 0) {
+			totalPage = Integer.parseInt(getTagValue("totalCount", eElement))/10;
+			pageNo = Integer.parseInt(getTagValue("pageNo", eElement));
+		} 
+		
+		return new MissingPetResponse(list, totalPage, pageNo);
+	}
+	private static String getTagValue(String tag, Element eElement) {
+	    NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
+	    Node nValue = (Node) nlList.item(0);
+	    if(nValue == null) 
+	        return null;
+	    return nValue.getNodeValue();
+	}
+	
+	public String findPet(int pageNo) throws Exception{
+		StringBuilder urlBuilder = new StringBuilder("http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + MarketConfig.missingPetKey); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + pageNo);
+        String url = urlBuilder.toString();
+        System.out.println(url);
+        String xml = requestHTTP(url,null);
+        
+        return xml;
+	}
+	
 	private String createNaverAPIURL(String code, String state) throws Exception {
 		String redirectURI = URLEncoder.encode(MarketConfig.authNaverCallbackURL, "UTF-8");
 
@@ -65,7 +136,6 @@ public class MarketService {
 		// HTTP Request > Header
 		if(map != null) {
 			for(String key : map.keySet()) {
-				//con.setRequestProperty("Authorization", authorization);
 				con.setRequestProperty(key, map.get(key));
 			}
 		}
@@ -79,9 +149,9 @@ public class MarketService {
 		// HTTP Response > Body
 		BufferedReader br;
 		if (responseCode == HttpURLConnection.HTTP_OK) {
-			br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			br = new BufferedReader(new InputStreamReader(con.getInputStream(),"UTF-8"));
 		} else {
-			br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			br = new BufferedReader(new InputStreamReader(con.getErrorStream(),"UTF-8"));
 		}
 		String inputLine;
 		StringBuffer res = new StringBuffer();
@@ -149,11 +219,6 @@ public class MarketService {
 		member.setMemberBirthDate(LocalDate.parse(birthdate, format));
 		return member;
 	}
-	
-//	// 전체상품
-//	public List<?> allProduct() throws Exception {
-//		return sqlSession2.selectList("allProduct");
-//	}
 
 	// 상품검색
 	public List<?> searchProduct(String productName) throws Exception {
@@ -173,6 +238,23 @@ public class MarketService {
 	// 한품목선택
 	public Product selectProductOne(String productNo) throws Exception {
 		return sqlSession2.selectOne("selectProductOne", productNo);
+	}
+	//쿠폰보기
+	public List<Coupon> couponList(String memberId){
+		return sqlSession2.selectList("couponList", memberId);
+	}
+	public Coupon useCoupon(AccountCoupon ac){
+		sqlSession2.update("useCoupon", ac);
+		return sqlSession2.selectOne("couponInfo", ac.getCouponCode());
+	}
+	public Sales salesTemp(String memberId, int productNo, int salesCount){
+		Sales salesInfo = new Sales();
+		Product pd= sqlSession2.selectOne("selectProductOne", productNo);
+		salesInfo.setMemberId(memberId);
+		salesInfo.setProductNo(productNo);
+		salesInfo.setProductPrice(pd.getProductPrice());
+		salesInfo.setSalesCount(salesCount);
+		return salesInfo;
 	}
 
 	// 구매 - 재고 빼기

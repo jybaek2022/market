@@ -10,15 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import gu.market.dto.PutProductRequest;
 import gu.market.error.MarketException;
 import gu.market.repository.model.*;
 import gu.market.service.*;
@@ -165,19 +171,11 @@ public class AdminController {
 
 		return mv;
 	}
-	//상품정보수정
-	@RequestMapping(value = "/modifiedProductInfo")
-	public String modifiedProductInfo(HttpServletRequest request, HttpSession session, Product product) throws MarketException {
-		int productNo = Integer.parseInt(request.getParameter("productNo"));
-		int productCatCode = Integer.parseInt(request.getParameter("productCatCode"));
-		String productName = request.getParameter("productName");
-		String productDetail = request.getParameter("productDetail");
-		int productPrice = Integer.parseInt(request.getParameter("productPrice"));
-		int productStock = Integer.parseInt(request.getParameter("productStock"));
-		String productStatus = request.getParameter("productStatus");
-		//String productImgSrc = request.getParameter("address2"); 이미지 수정 나중에
+	@PostMapping(value = "/modifiedProductInfo", consumes = {"application/x-www-form-urlencoded"})
+	public String modifiedProductInfo(HttpServletRequest request, HttpSession session, PutProductRequest product) throws MarketException {
+		System.out.println(product.getProductStock());
 		try {
-			adminSvc.modifiedProductInfo(productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus);
+			adminSvc.modifiedProductInfo(product);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,6 +183,27 @@ public class AdminController {
 		
 		return "admin/admin_home";
 	}
+	
+	//상품정보수정
+//	@RequestMapping(value = "/modifiedProductInfo")
+//	public String modifiedProductInfo(HttpServletRequest request, HttpSession session, Product product) throws MarketException {
+//		int productNo = Integer.parseInt(request.getParameter("productNo"));
+//		int productCatCode = Integer.parseInt(request.getParameter("productCatCode"));
+//		String productName = request.getParameter("productName");
+//		String productDetail = request.getParameter("productDetail");
+//		int productPrice = Integer.parseInt(request.getParameter("productPrice"));
+//		int productStock = Integer.parseInt(request.getParameter("productStock"));
+//		String productStatus = request.getParameter("productStatus");
+//		//String productImgSrc = request.getParameter("address2"); 이미지 수정 나중에
+//		try {
+//			adminSvc.modifiedProductInfo(productNo, productCatCode, productName, productDetail, productPrice, productStock, productStatus);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return "admin/admin_home";
+//	}
 	//상품삭제
 	@RequestMapping(value= "/deleteProduct")
 	public String deleteProduct(HttpServletRequest request) {

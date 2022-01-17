@@ -105,6 +105,11 @@
 				</td>
 				<td width="10" align="center">
 					<img alt="" src="../img/top1.jpg">
+				</td>
+				<td width="180" align="center">
+					<font size="3" color="black">
+						<a style="text-decoration:none" href = "<%=marketPath%>/getMissingPet"><b>실종찾기</b></a>
+					</font>
 				</td>	
 			</tr>
 		</table>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="coupon">
+	<select id="selectCouponList" parameterType="int" resultType="gu.market.repository.model.Member">
+        SELECT memberId, memberEmail
+		FROM member
+		WHERE memberId not in (SELECT memberId
+								FROM accountcoupon
+								WHERE couponCode = #{couponCode} and exists (SELECT memberId
+																	FROM member
+																	WHERE DATEDIFF(CURDATE(), memberJoinDate) >= 5))
+	</select>
+	
+    <insert id="insertCoupon" parameterType="gu.market.repository.model.AccountCoupon" >
+    	INSERT INTO ACCOUNTCOUPON(memberId, couponCode)
+		VALUES (#{memberId}, #{couponCode})
+	</insert>
+	
+	<select id="couponList" parameterType="String" resultType="gu.market.repository.model.Coupon">
+        SELECT couponName, discountRate, couponCode
+          FROM Coupon
+         WHERE couponCode = 
+	        (SELECT couponCode
+			FROM accountcoupon
+			WHERE usingStatus is null and memberId = #{memberId})
+	</select>
+
+	<select id="couponInfo" parameterType="int" resultType="gu.market.repository.model.Coupon">
+	        SELECT couponName, discountRate
+	          FROM Coupon
+	         WHERE couponCode = #{couponCode()}
+	</select>
+	<update id="useCoupon" parameterType="gu.market.repository.model.AccountCoupon">
+        UPDATE accountcoupon
+        SET usingStatus = 1
+        WHERE memberId = #{memberId} and couponCode=#{couponCode}
+    </update>
+</mapper>

@@ -1,6 +1,8 @@
 package gu.market.service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,8 +10,10 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import gu.market.dto.PutProductRequest;
 import gu.market.error.ErrorCode;
 import gu.market.error.MarketException;
 import gu.market.repository.model.*;
@@ -20,7 +24,7 @@ public class AdminService {
 	@Autowired
 	@Resource(name = "sqlSessionTemplate2")
 	private SqlSessionTemplate sqlSession2;
-
+	
 	// 전체회원
 	public List<?> allMember() {
 		return sqlSession2.selectList("allMember");
@@ -65,18 +69,30 @@ public class AdminService {
 		return sqlSession2.selectOne("selectProductOne", productNo);
 	}
 	// 품목정보수정
-	public void modifiedProductInfo(int productNo, int productCatCode, String productName, String productDetail, 
-			int productPrice, int productStock, String productStatus) throws Exception {
+	public void modifiedProductInfo(PutProductRequest productInfo) throws Exception {
 		Product product = new Product();
-		product.setProductNo(productNo);
-		product.setProductCatCode(productCatCode);
-		product.setProductName(productName);
-		product.setProductDetail(productDetail);
-		product.setProductPrice(productPrice);
-		product.setProductStock(productStock);
-		product.setProductStatus(productStatus);
+		product.setProductNo(productInfo.getProductNo());
+		product.setProductCatCode(productInfo.getProductCatCode());
+		product.setProductName(productInfo.getProductName());
+		product.setProductDetail(productInfo.getProductDetail());
+		product.setProductPrice(productInfo.getProductPrice());
+		product.setProductStock(productInfo.getProductStock());
+		product.setProductStatus(productInfo.getProductStatus());
 		sqlSession2.update("modifyProduct", product);
 	}
+//	// 품목정보수정
+//	public void modifiedProductInfo(int productNo, int productCatCode, String productName, String productDetail, 
+//			int productPrice, int productStock, String productStatus) throws Exception {
+//		Product product = new Product();
+//		product.setProductNo(productNo);
+//		product.setProductCatCode(productCatCode);
+//		product.setProductName(productName);
+//		product.setProductDetail(productDetail);
+//		product.setProductPrice(productPrice);
+//		product.setProductStock(productStock);
+//		product.setProductStatus(productStatus);
+//		sqlSession2.update("modifyProduct", product);
+//	}
 	
 	public void deleteProduct(int productNo, String productStatus) {
 		Product product = new Product();

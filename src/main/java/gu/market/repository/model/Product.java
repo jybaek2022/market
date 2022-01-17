@@ -111,10 +111,10 @@ public class Product {
 			product.setProductName(obj.getString("productName"));
 			product.setProductPrice(obj.getInt("productPrice"));
 			product.setProductDetail(obj.getString("productDetail"));
+			product.setProductCatCode(obj.getInt("productCategory"));
 			
 			list.add(product);
 		}		
-		System.out.println("list출력 : "+ list.toString());
 		return list;
 	}
 	
@@ -128,10 +128,9 @@ public class Product {
 			sObject.put("productName", list.get(i).getProductName());
 			sObject.put("productPrice", list.get(i).getProductPrice());
 			sObject.put("productDetail", list.get(i).getProductDetail());
+			sObject.put("productCategory", list.get(i).getProductCatCode());
 			jArray.put(sObject);
 		}
-
-		System.out.println("넣기에서 json출력 : "+ jArray.toString());
 	
 		return jArray.toString();
 	}

@@ -1,5 +1,8 @@
 package gu.market.controller;
 
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +17,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import gu.market.dto.Page;
+import gu.market.dto.MissingPetResponse;
 import gu.market.error.MarketException;
 import gu.market.repository.model.*;
 import gu.market.service.AccountService;
+import gu.market.service.MailService;
 import gu.market.service.MarketService;
 import gu.market.service.ReviewService;
 import gu.market.session.SessionManager;
@@ -37,10 +40,11 @@ public class MarketController {
 	private ReviewService reviewSvc;
 	@Autowired
 	private AccountService actSvc;
+	@Autowired
+	private MailService mailSvc;
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(HttpServletRequest request) throws Exception {
-		
 		return "market/home";
 	}
 	
@@ -69,6 +73,24 @@ public class MarketController {
 		sessionManager.login(request.getSession(), member);
 		return "market/home";
 	}
+	//유기동물찾기 OPEN API 사용
+	@RequestMapping(value = "/getMissingPet", method = RequestMethod.GET)
+	public String getMissingPet(ModelMap modelMap, HttpServletRequest request) throws Exception{ // 정보접근 허용
+		int pageNo=0;
+		System.out.println(request.getParameter("pageNo"));
+		if(request.getParameter("pageNo")!=null) {
+			pageNo = (int)Math.floor(Double.parseDouble((String)request.getParameter("pageNo")));
+		}else{
+			pageNo = 1;
+		}
+		System.out.println(pageNo);
+		
+		MissingPetResponse res = marketSvc.parseXml(marketSvc.findPet(pageNo));
+		modelMap.addAttribute("list", res.getResult());
+		modelMap.addAttribute("totalPage", res.getTotalCount());
+		modelMap.addAttribute("pageNo", res.getPageNo());
+		return "market/findPet";
+	}
 		
 	@RequestMapping(value = "/top")
 	public ModelAndView top(HttpSession session) throws Exception {
@@ -96,7 +118,7 @@ public class MarketController {
 	@RequestMapping(value = "/allProduct")
 	public String allProductList(ModelMap modelMap, HttpServletRequest request)
 			throws Exception {
-
+		
 		int total = marketSvc.countProductList();
 		int cntPerPage = 10;
 		int totalPage = (total/cntPerPage) + 1;
@@ -147,6 +169,9 @@ public class MarketController {
 		List<?> productview = marketSvc.newProduct();
 
 		modelMap.addAttribute("productview", productview);
+		
+		mailSvc.CouponSender();
+		
 		return "market/allProductPage";
 	}
 	
@@ -160,27 +185,61 @@ public class MarketController {
 		else
 			return "forward:/market/addCart";
 		}
-	// 구매하기 ( 재고 및 정보전달 후 구매완료페이지로만 넘어가게. 나중에 결제 추가)
+	// 구매하기
 	@RequestMapping(value = "/purchase", method = {RequestMethod.GET, RequestMethod.POST})
-	public String purchase(HttpServletRequest request, HttpSession session) throws Exception {
+	public String purchase(HttpServletRequest request, HttpSession session, ModelMap modelMap) throws Exception {
 		String memberId = sessionManager.getId(session);
-		if(memberId==null) {
-			return "error/unloginedError";
-		}
 		
 		int productNo = Integer.parseInt(request.getParameter("productNo"));
 		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
 		
+		if(memberId==null) {
+			return "error/unloginedError";
+		}
+		
+		List<Coupon> couponList = marketSvc.couponList(memberId);
+		modelMap.addAttribute("couponList", couponList);
+		
+		Sales salesInfo = marketSvc.salesTemp(memberId, productNo, salesCount);
+		modelMap.addAttribute("sales_info", salesInfo);
+		
+		return "market/purchaseF";
+	}
+	@RequestMapping(value = "/payment", method = RequestMethod.POST)
+	public String payment(HttpServletRequest request, HttpSession session, ModelMap modelMap) throws Exception {
+		String memberId = sessionManager.getId(session);
+		int productNo = Integer.parseInt(request.getParameter("productNo"));
+		int salesCount = Integer.parseInt(request.getParameter("salesCount"));
+	
 		marketSvc.minusCount(productNo, salesCount);
 		marketSvc.purchase(memberId, productNo, salesCount);
 		//장바구니에서 넘어온경우 장바구니에서 삭제
+		
+		int totalAmount = Integer.parseInt(request.getParameter("totalAmount"));
+		int discountRate = 0;
+		int dicountPrice = 0;
+		if(request.getParameter("couponCode")!=null) {
+			int couponCode = Integer.parseInt(request.getParameter("couponCode"));
+			
+			AccountCoupon ac = new AccountCoupon();
+			ac.setCouponCode(couponCode);
+			ac.setMemberId(memberId);
+			Coupon coupon = marketSvc.useCoupon(ac);
+			
+			discountRate = coupon.getDiscountRate();
+			
+			request.setAttribute("discountRate", discountRate);
+		}
 		
 		if(request.getParameter("cartNo") != null) {
 			int cartNo = Integer.parseInt(request.getParameter("cartNo"));
 			marketSvc.deleteFcart(cartNo);
 		}
 		
-		return "market/purchaseF";
+		request.setAttribute("totalAmount", totalAmount);
+
+		
+		return "market/finishPayment";
 	}
 	//장바구니보기
 	@RequestMapping(value = "/allCart")
@@ -225,7 +284,8 @@ public class MarketController {
 		if(e instanceof MarketException) {
 			System.out.println("market error : " + e.toString());
 		} else {
-			System.out.println(e.toString());
+			e.printStackTrace();
+//			System.out.println(e.toString());
 		}
 		
 		ModelAndView mv = new ModelAndView("market/error");
